@@ -18,6 +18,10 @@ Route::get('/hello', function (Request $request) {
     return 'hello';
 });
 
+Route::group(['namespace' => 'App\Http\Controllers'], function ($router) {
+    Route::get('/database-test', 'DatabseTestController@index');
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
