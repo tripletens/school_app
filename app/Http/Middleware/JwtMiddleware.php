@@ -27,9 +27,9 @@ class JwtMiddleware
                 return response()->json([
                     'status' => false,
                     'success' => false,
-                    'code' => 401,
+                    'status_code' => 401,
                     'data' => [],
-                    'msg' => 'Token is Invalid',
+                    'response' => 'Token is Invalid',
                     'debug' => [],
                 ]);
 
@@ -42,9 +42,9 @@ class JwtMiddleware
                 return response()->json([
                     'status' => false,
                     'success' => false,
-                    'code' => 401,
+                    'status_code' => 401,
                     'data' => [],
-                    'msg' => 'Token is Expired',
+                    'response' => 'Token is Expired',
                     'debug' => [],
                 ]);
 
@@ -53,9 +53,9 @@ class JwtMiddleware
                 return response()->json([
                     'status' => false,
                     'success' => false,
-                    'code' => 401,
+                    'status_code' => 401,
                     'data' => [],
-                    'msg' => 'Authorization Token not found',
+                    'response' => 'Authorization Token not found',
                     'debug' => [],
                 ]);
             }

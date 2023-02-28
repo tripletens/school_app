@@ -50,3 +50,15 @@ Route::group(
         Route::get('/dashboard', 'UserController@dashboard');
     }
 );
+
+// routes action for users
+Route::group(
+    [
+        'middleware' => ['jwt.verify'],
+        'prefix' => 'admin',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::get('/school-class/all', 'SchoolClassController@all_class');
+    }
+);
