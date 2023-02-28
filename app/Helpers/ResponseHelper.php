@@ -24,10 +24,12 @@ class ResponseHelper
         return (object) [
             'status' => false,
             'success' => false,
-            'code' => $code,
+            'status_code' => $code,
             'data' => $data,
-            'msg' => $msg,
-            'debug' => [],
+            'response' => $msg,
+            'token' => $token,
+            'debug' => null,
+            'debug_data' => [],
         ];
     }
 
@@ -39,11 +41,12 @@ class ResponseHelper
         return (object) [
             'status' => true,
             'success' => true,
-            'code' => 200,
+            'status_code' => 200,
+            'response' => $msg,
             'data' => $data,
             'token' => $token,
-            'msg' => $msg,
-            'debug' => [],
+            'debug' => null,
+            'debug_data' => [],
         ];
     }
 
