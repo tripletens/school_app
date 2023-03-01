@@ -4,7 +4,7 @@
  *
  *
  * @package
- * @author	Champa
+ * @author	School Mgt
  * @copyright
  * @version	1.0.0
  */

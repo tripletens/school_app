@@ -37,6 +37,12 @@ class AuthValidators
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:8',
             ],
+
+            'register_class' => [
+                'name' => 'required',
+                'arm' => 'required',
+                'staff' => 'required',
+            ],
         ];
 
         ////return self::$validation_rules[$arg];

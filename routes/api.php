@@ -60,5 +60,9 @@ Route::group(
     ],
     function ($router) {
         Route::get('/school-class/all', 'SchoolClassController@all_class');
+        Route::post(
+            '/school-class/create',
+            'SchoolClassController@register_class'
+        );
     }
 );

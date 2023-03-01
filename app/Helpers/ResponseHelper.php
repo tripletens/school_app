@@ -27,7 +27,7 @@ class ResponseHelper
             'status_code' => $code,
             'data' => $data,
             'response' => $msg,
-            'token' => $token,
+            'token' => null,
             'debug' => null,
             'debug_data' => [],
         ];
