@@ -37,6 +37,7 @@ Route::group(
         Route::post('/create', 'RoleController@create');
         Route::get('/roles', 'RoleController@roles');
         Route::put('/role', 'RoleController@update');
+        Route::delete('/delete', 'RoleController@delete');
     }
 );
 
@@ -86,7 +87,7 @@ Route::group(
         'namespace' => 'App\Http\Controllers',
     ],
     function ($router) {
-        Route::get('/school-class/all', 'SchoolClassController@all_class');
+        Route::get('/school-class/classes', 'SchoolClassController@classes');
         Route::post(
             '/school-class/create',
             'SchoolClassController@register_class'

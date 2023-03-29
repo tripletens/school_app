@@ -65,7 +65,7 @@ class SchoolClassController extends Controller
         }
     }
 
-    public function all_class()
+    public function classes()
     {
         $classes = SchoolClass::all();
         return ResponseHelper::success_response('All school classes', $classes);

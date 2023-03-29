@@ -16,35 +16,28 @@ class RoleController extends Controller
     public function delete(Request $request)
     {
         if ($request->isMethod('delete')) {
-            $validate = AuthValidators::validate_rules($request, 'update_role');
+            $validate = AuthValidators::validate_rules($request, 'delete_role');
 
             if (!$validate->fails() && $validate->validated()) {
-                $name = $request->name;
                 $id = $request->id;
-                $slug = str_replace(' ', '_', $name);
 
-                $data = [
-                    'name' => $name,
-                    'slug' => $slug,
-                ];
-
-                $create = DBHelpers::update_query(Role::class, $data, $id);
+                $create = DBHelpers::delete_query(Role::class, $id);
 
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Update was successful',
+                        'Delete was successful',
                         null
                     );
                 } else {
                     return ResponseHelper::error_response(
-                        'Update failed, Database insertion issues',
+                        'Delete failed, Database issues',
                         '',
                         401
                     );
                 }
             } else {
                 $errors = json_decode($validate->errors());
-                $props = ['name', 'id'];
+                $props = ['id'];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
 
                 return ResponseHelper::error_response(

@@ -62,6 +62,10 @@ class AuthValidators
                 'name' => 'required|unique:role',
                 'id' => 'required',
             ],
+
+            'delete_role' => [
+                'id' => 'required',
+            ],
         ];
 
         ////return self::$validation_rules[$arg];
