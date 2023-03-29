@@ -14,11 +14,36 @@ use Illuminate\Database\Eloquent\Model;
 
 class DBHelpers
 {
+    public static function delete_query($dataModel, $id)
+    {
+        try {
+            return $dataModel::where('id', $id)->delete();
+        } catch (Exception $e) {
+            return ResponseHelper::error_response(
+                'Server Error',
+                $e->getMessage(),
+                401
+            );
+        }
+    }
+
+    public static function update_query($dataModel, $data, $id)
+    {
+        try {
+            return $dataModel::where('id', $id)->update($data);
+        } catch (Exception $e) {
+            return ResponseHelper::error_response(
+                'Server Error',
+                $e->getMessage(),
+                401
+            );
+        }
+    }
+
     public static function create_query($dataModel, $data)
     {
         try {
-            $create = $dataModel::create($data);
-            return $create;
+            return $dataModel::create($data);
         } catch (Exception $e) {
             return ResponseHelper::error_response(
                 'Server Error',

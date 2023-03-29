@@ -15,6 +15,24 @@ class StaffController extends Controller
 {
     //
 
+    public function staffs()
+    {
+        try {
+            $staffs = Staff::with(['user', 'role'])->get();
+
+            return ResponseHelper::success_response(
+                'All staffs fetched successful',
+                $staffs
+            );
+        } catch (Exception $e) {
+            return ResponseHelper::error_response(
+                'Server Error',
+                $e->getMessage(),
+                401
+            );
+        }
+    }
+
     public function create(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -51,6 +69,7 @@ class StaffController extends Controller
                     'surname' => $request->surname,
                     'phone' => $request->phone,
                     'uid' => $create->id,
+                    'role' => $request->role,
                 ];
 
                 $create = DBHelpers::create_query(Staff::class, $staff_data);

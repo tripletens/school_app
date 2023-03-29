@@ -26,6 +26,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Role (Control and Manage Role)
+Route::group(
+    [
+        'middleware' => 'jwt.verify',
+        'prefix' => 'role',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::post('/create', 'RoleController@create');
+        Route::get('/roles', 'RoleController@roles');
+        Route::put('/role', 'RoleController@update');
+    }
+);
+
 // Staff (Control and Manage Staff)
 Route::group(
     [
@@ -35,6 +49,7 @@ Route::group(
     ],
     function ($router) {
         Route::post('/create', 'StaffController@create');
+        Route::get('/staffs', 'StaffController@staffs');
     }
 );
 

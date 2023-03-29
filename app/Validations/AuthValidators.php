@@ -53,6 +53,15 @@ class AuthValidators
                 'phone' => 'required',
                 'role' => 'required',
             ],
+
+            'register_role' => [
+                'name' => 'required|unique:role',
+            ],
+
+            'update_role' => [
+                'name' => 'required|unique:role',
+                'id' => 'required',
+            ],
         ];
 
         ////return self::$validation_rules[$arg];
