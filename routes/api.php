@@ -26,6 +26,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Staff (Control and Manage Staff)
+Route::group(
+    [
+        'middleware' => 'jwt.verify',
+        'prefix' => 'staff',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::post('/create', 'StaffController@create');
+    }
+);
+
 // routes action for users Auth
 Route::group(
     [

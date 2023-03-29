@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Role;
+use App\Models\Staff;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -21,7 +22,14 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array<int, string>
      */
-    protected $fillable = ['email', 'password', 'data', 'full_name', 'phone', 'role'];
+    protected $fillable = [
+        'email',
+        'password',
+        'data',
+        'full_name',
+        'phone',
+        'role',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -53,4 +61,9 @@ class User extends Authenticatable implements JWTSubject
     // {
     //     return $this->belongsTo(Role::class);
     // }
+
+    public function staff()
+    {
+        return $this->hasOne(Staff::class, 'uid');
+    }
 }

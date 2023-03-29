@@ -43,6 +43,16 @@ class AuthValidators
                 'arm' => 'required',
                 'staff' => 'required',
             ],
+
+            'register_staff' => [
+                'first_name' => 'required',
+                'other_name' => 'required',
+                'surname' => 'required',
+                'email' => 'required|unique:users',
+                'password' => 'required',
+                'phone' => 'required',
+                'role' => 'required',
+            ],
         ];
 
         ////return self::$validation_rules[$arg];

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class SchoolClass extends Model
 {
@@ -22,7 +23,12 @@ class SchoolClass extends Model
         'staff',
         'level',
         'category',
-        'no_of_staudents',
+        'no_of_students',
         'status',
     ];
+
+    public function staff()
+    {
+        return $this->belongsTo(User::class, 'staff');
+    }
 }

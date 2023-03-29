@@ -69,6 +69,11 @@ class AuthController extends Controller
                 );
             }
         } else {
+            return ResponseHelper::error_response(
+                'HTTP Request not allowed',
+                '',
+                404
+            );
         }
     }
 
@@ -109,6 +114,12 @@ class AuthController extends Controller
                     401
                 );
             }
+        } else {
+            return ResponseHelper::error_response(
+                'HTTP Request not allowed',
+                '',
+                404
+            );
         }
     }
 

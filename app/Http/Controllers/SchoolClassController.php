@@ -56,13 +56,18 @@ class SchoolClassController extends Controller
                     401
                 );
             }
+        } else {
+            return ResponseHelper::error_response(
+                'HTTP Request not allowed',
+                '',
+                404
+            );
         }
     }
 
     public function all_class()
     {
         $classes = SchoolClass::all();
-
         return ResponseHelper::success_response('All school classes', $classes);
     }
 }
