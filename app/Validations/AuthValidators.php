@@ -66,6 +66,20 @@ class AuthValidators
             'delete_role' => [
                 'id' => 'required',
             ],
+
+            'register_student' => [
+                'first_name' => 'required',
+                'other_name' => 'required',
+                'surname' => 'required',
+                'email' => 'required|unique:users',
+                'password' => 'required',
+                'phone' => 'required',
+                'role' => 'required',
+                'dob' => 'required',
+                'sport_house' => 'required',
+                'admission_number' => 'required',
+                'school_class' => 'required',
+            ],
         ];
 
         ////return self::$validation_rules[$arg];
