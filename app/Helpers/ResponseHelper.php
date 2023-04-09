@@ -19,9 +19,12 @@ class ResponseHelper
         ];
     }
 
-    public static function error_response($msg = null, $data = null, $code = 0)
-    {
-        return (object) [
+    public static function error_response(
+        $msg = null,
+        $data = null,
+        $code = 400
+    ) {
+        return \response()->json([
             'status' => false,
             'success' => false,
             'status_code' => $code,
@@ -30,7 +33,7 @@ class ResponseHelper
             'token' => null,
             'debug' => null,
             'debug_data' => [],
-        ];
+        ]);
     }
 
     public static function success_response(
@@ -38,7 +41,7 @@ class ResponseHelper
         $data = null,
         $token = null
     ) {
-        return (object) [
+        return \response()->json([
             'status' => true,
             'success' => true,
             'status_code' => 200,
@@ -47,7 +50,7 @@ class ResponseHelper
             'token' => $token,
             'debug' => null,
             'debug_data' => [],
-        ];
+        ]);
     }
 
     public static function serverError($error, int $code = 500)

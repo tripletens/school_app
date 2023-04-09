@@ -10,7 +10,6 @@ use App\Validations\AuthValidators;
 use App\Validations\ErrorValidation;
 
 use Illuminate\Support\Facades\Auth;
-
 use App\Helpers\ResponseHelper;
 
 class AuthController extends Controller

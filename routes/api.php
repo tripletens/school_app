@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Role (Control and Manage Role)
 Route::group(
     [
-        'middleware' => 'jwt.verify',
+        'middleware' => ['jwt.verify', 'admin.access'],
         'prefix' => 'role',
         'namespace' => 'App\Http\Controllers',
     ],
@@ -44,7 +44,7 @@ Route::group(
 // Staff (Control and Manage Staff)
 Route::group(
     [
-        'middleware' => 'jwt.verify',
+        'middleware' => ['jwt.verify', 'admin.access'],
         'prefix' => 'staff',
         'namespace' => 'App\Http\Controllers',
     ],
@@ -57,13 +57,13 @@ Route::group(
 // routes action for users Auth
 Route::group(
     [
-        'middleware' => 'api',
+        'middleware' => ['api', 'login.logger'],
         'prefix' => 'auth',
         'namespace' => 'App\Http\Controllers',
     ],
     function ($router) {
         Route::post('/login', 'AuthController@login');
-        Route::post('/register', 'AuthController@register');
+        //  Route::post('/register', 'AuthController@register');
     }
 );
 
@@ -82,15 +82,12 @@ Route::group(
 // routes action for users
 Route::group(
     [
-        'middleware' => ['jwt.verify'],
-        'prefix' => 'admin',
+        'middleware' => ['jwt.verify', 'admin.access'],
+        'prefix' => 'admin/school-class',
         'namespace' => 'App\Http\Controllers',
     ],
     function ($router) {
-        Route::get('/school-class/classes', 'SchoolClassController@classes');
-        Route::post(
-            '/school-class/create',
-            'SchoolClassController@register_class'
-        );
+        Route::get('/classes', 'SchoolClassController@classes');
+        Route::post('/create', 'SchoolClassController@register_class');
     }
 );
