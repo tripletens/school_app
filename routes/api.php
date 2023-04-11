@@ -26,6 +26,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// SCHOOL CLASSES
+Route::group(
+    [
+        'middleware' => ['jwt.verify', 'admin.access'],
+        'prefix' => 'admin/school-class',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::get('/classes', 'SchoolClassController@classes');
+        Route::post('/create', 'SchoolClassController@register_class');
+        Route::put('/update', 'SchoolClassController@update');
+    }
+);
+
 /////// SCHOOL TERM SESSION CRUD
 Route::group(
     [
@@ -55,6 +69,18 @@ Route::group(
         );
 
         Route::post('/create', 'SchoolSessionController@create');
+
+        Route::get(
+            '/school-sessions',
+            'SchoolSessionController@school_sessions'
+        );
+
+        Route::put(
+            '/activate-session',
+            'SchoolSessionController@activate_session'
+        );
+
+        Route::put('/update', 'SchoolSessionController@update');
     }
 );
 
@@ -96,19 +122,6 @@ Route::group(
     function ($router) {
         Route::post('/login', 'AuthController@login');
         //  Route::post('/register', 'AuthController@register');
-    }
-);
-
-// routes action for users
-Route::group(
-    [
-        'middleware' => ['jwt.verify', 'admin.access'],
-        'prefix' => 'admin/school-class',
-        'namespace' => 'App\Http\Controllers',
-    ],
-    function ($router) {
-        Route::get('/classes', 'SchoolClassController@classes');
-        Route::post('/create', 'SchoolClassController@register_class');
     }
 );
 

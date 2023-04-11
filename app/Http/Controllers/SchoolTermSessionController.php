@@ -22,23 +22,19 @@ class SchoolTermSessionController extends Controller
             );
 
             if (!$validate->fails() && $validate->validated()) {
-                $all_update = [
-                    'is_active' => 0,
-                ];
-
-                $update = [
-                    'is_active' => 1,
-                ];
-
                 DBHelpers::update_query(
                     SchoolTermSession::class,
-                    $all_update,
+                    [
+                        'is_active' => 0,
+                    ],
                     null
                 );
 
                 $activate = DBHelpers::update_query(
                     SchoolTermSession::class,
-                    $update,
+                    [
+                        'is_active' => 1,
+                    ],
                     $request->id
                 );
 
@@ -92,24 +88,24 @@ class SchoolTermSessionController extends Controller
                     'slug' => $slug,
                 ];
 
-                $create = DBHelpers::update_query(
+                $update = DBHelpers::update_query(
                     SchoolTermSession::class,
                     $data,
                     $id
                 );
 
-                if ($create) {
-                    return ResponseHelper::success_response(
-                        'Update was successful',
-                        null
-                    );
-                } else {
+                if (!$update) {
                     return ResponseHelper::error_response(
                         'Update failed, Database insertion issues',
                         '',
                         401
                     );
                 }
+
+                return ResponseHelper::success_response(
+                    'Update was successful',
+                    null
+                );
             } else {
                 $errors = json_decode($validate->errors());
                 $props = ['name', 'id'];

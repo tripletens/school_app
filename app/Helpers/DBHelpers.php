@@ -14,6 +14,51 @@ use Illuminate\Database\Eloquent\Model;
 
 class DBHelpers
 {
+    public static function exists($dataModel, $data)
+    {
+        try {
+            return $dataModel
+                ::query()
+                ->where($data)
+                ->exists();
+        } catch (Exception $e) {
+            return ResponseHelper::error_response(
+                'Server Error',
+                $e->getMessage(),
+                401
+            );
+        }
+    }
+
+    public static function init_model($dataModel)
+    {
+        try {
+            return $dataModel::query();
+        } catch (Exception $e) {
+            return ResponseHelper::error_response(
+                'Server Error',
+                $e->getMessage(),
+                401
+            );
+        }
+    }
+
+    public static function with_query($dataModel, $with_clause = [])
+    {
+        try {
+            return $dataModel
+                ::query()
+                ->with($with_clause)
+                ->get();
+        } catch (Exception $e) {
+            return ResponseHelper::error_response(
+                'Server Error',
+                $e->getMessage(),
+                401
+            );
+        }
+    }
+
     //////  query where filter data
     public static function query_filter($dataModel, $filter)
     {

@@ -19,9 +19,16 @@ class SchoolClassValidators
     {
         self::$validation_rules = [
             'register_class' => [
+                'name' => 'required|unique:school_class',
+                'arm' => 'required',
+                'staff' => 'required',
+            ],
+
+            'update_class' => [
                 'name' => 'required',
                 'arm' => 'required',
                 'staff' => 'required',
+                'id' => 'required',
             ],
         ];
 

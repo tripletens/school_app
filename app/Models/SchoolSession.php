@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SchoolTermSession;
 
 class SchoolSession extends Model
 {
@@ -23,4 +24,9 @@ class SchoolSession extends Model
         'status',
         'is_active',
     ];
+
+    public function term()
+    {
+        return $this->hasOne(SchoolTermSession::class, 'id');
+    }
 }

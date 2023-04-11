@@ -24,7 +24,17 @@ class SchoolSessionValidators
                 'start_date' => 'required',
                 'end_date' => 'required',
                 'day_duration' => 'required',
-                'school_population' => 'required',
+            ],
+            'activate_session' => [
+                'session_id' => 'required',
+            ],
+            'update' => [
+                'id' => 'required',
+                'school_session' => 'required',
+                'school_term' => 'required',
+                'start_date' => 'required',
+                'end_date' => 'required',
+                'day_duration' => 'required',
             ],
         ];
         return Func::run_validation($request, self::$validation_rules[$arg]);

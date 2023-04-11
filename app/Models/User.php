@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Role;
 use App\Models\Staff;
+use App\Models\Student;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -65,6 +66,11 @@ class User extends Authenticatable implements JWTSubject
     public function staff()
     {
         return $this->hasOne(Staff::class, 'uid');
+    }
+
+    public function student()
+    {
+        return $this->hasOne(Student::class, 'uid');
     }
 
     public function role()
