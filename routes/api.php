@@ -26,6 +26,38 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+/////// SCHOOL TERM SESSION CRUD
+Route::group(
+    [
+        'middleware' => ['jwt.verify', 'admin.access'],
+        'prefix' => 'school-term',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::post('/create', 'SchoolTermSessionController@create');
+        Route::get('/terms', 'SchoolTermSessionController@terms');
+        Route::put('/update', 'SchoolTermSessionController@update');
+        Route::post('/activate', 'SchoolTermSessionController@activate_term');
+    }
+);
+
+/////// SCHOOL SESSION CRUD
+Route::group(
+    [
+        'middleware' => ['jwt.verify', 'admin.access'],
+        'prefix' => 'school-session',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::get(
+            '/yealy-session',
+            'SchoolSessionController@school_session_years'
+        );
+
+        Route::post('/create', 'SchoolSessionController@create');
+    }
+);
+
 // Role (Control and Manage Role)
 Route::group(
     [
@@ -70,18 +102,6 @@ Route::group(
 // routes action for users
 Route::group(
     [
-        'middleware' => 'jwt.verify',
-        'prefix' => 'user',
-        'namespace' => 'App\Http\Controllers',
-    ],
-    function ($router) {
-        Route::get('/dashboard', 'UserController@dashboard');
-    }
-);
-
-// routes action for users
-Route::group(
-    [
         'middleware' => ['jwt.verify', 'admin.access'],
         'prefix' => 'admin/school-class',
         'namespace' => 'App\Http\Controllers',
@@ -89,5 +109,23 @@ Route::group(
     function ($router) {
         Route::get('/classes', 'SchoolClassController@classes');
         Route::post('/create', 'SchoolClassController@register_class');
+    }
+);
+
+// ************************************
+
+// USERS SECTION
+
+// ****************************************
+
+// routes action for users
+Route::group(
+    [
+        'middleware' => 'jwt.verify',
+        'prefix' => 'user',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::get('/dashboard', 'UserController@dashboard');
     }
 );

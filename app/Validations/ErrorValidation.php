@@ -33,8 +33,6 @@ class ErrorValidation
 
     public static function validate_rules($request, string $arg)
     {
-        ///  return 'we here';
-
         self::$validation_rules = [
             'login' => [
                 'email' => 'required',
@@ -54,8 +52,6 @@ class ErrorValidation
                 'password' => 'required|min:8',
             ],
         ];
-
-        ////return self::$validation_rules[$arg];
 
         return Func::run_validation($request, self::$validation_rules[$arg]);
     }

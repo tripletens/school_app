@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
 use App\Models\SchoolClass;
 use App\Helpers\DBHelpers;
-use App\Validations\AuthValidators;
+use App\Validations\SchoolClassValidators;
 use App\Validations\ErrorValidation;
 
 class SchoolClassController extends Controller
@@ -18,7 +18,7 @@ class SchoolClassController extends Controller
         if ($request->isMethod('post')) {
             /// return $request;
 
-            $validate = AuthValidators::validate_rules(
+            $validate = SchoolClassValidators::validate_rules(
                 $request,
                 'register_class'
             );

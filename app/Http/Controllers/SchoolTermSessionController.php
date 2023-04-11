@@ -3,34 +3,53 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Helpers\ResponseHelper;
-use App\Models\Role;
-use App\Helpers\DBHelpers;
-use App\Validations\RoleValidators;
+use App\Validations\SchoolTermSessionValidators;
 use App\Validations\ErrorValidation;
+use App\Helpers\ResponseHelper;
+use App\Models\SchoolTermSession;
+use App\Helpers\DBHelpers;
 
-class RoleController extends Controller
+class SchoolTermSessionController extends Controller
 {
     //
 
-    public function delete(Request $request)
+    public function activate_term(Request $request)
     {
-        if ($request->isMethod('delete')) {
-            $validate = RoleValidators::validate_rules($request, 'delete_role');
+        if ($request->isMethod('post')) {
+            $validate = SchoolTermSessionValidators::validate_rules(
+                $request,
+                'activate_term'
+            );
 
             if (!$validate->fails() && $validate->validated()) {
-                $id = $request->id;
+                $all_update = [
+                    'is_active' => 0,
+                ];
 
-                $create = DBHelpers::delete_query(Role::class, $id);
+                $update = [
+                    'is_active' => 1,
+                ];
 
-                if ($create) {
+                DBHelpers::update_query(
+                    SchoolTermSession::class,
+                    $all_update,
+                    null
+                );
+
+                $activate = DBHelpers::update_query(
+                    SchoolTermSession::class,
+                    $update,
+                    $request->id
+                );
+
+                if ($activate) {
                     return ResponseHelper::success_response(
-                        'Delete was successful',
+                        'School term activated successful',
                         null
                     );
                 } else {
                     return ResponseHelper::error_response(
-                        'Delete failed, Database issues',
+                        'Update failed, Database insertion issues',
                         '',
                         401
                     );
@@ -58,7 +77,10 @@ class RoleController extends Controller
     public function update(Request $request)
     {
         if ($request->isMethod('put')) {
-            $validate = RoleValidators::validate_rules($request, 'update_role');
+            $validate = SchoolTermSessionValidators::validate_rules(
+                $request,
+                'update_term'
+            );
 
             if (!$validate->fails() && $validate->validated()) {
                 $name = $request->name;
@@ -70,7 +92,11 @@ class RoleController extends Controller
                     'slug' => $slug,
                 ];
 
-                $create = DBHelpers::update_query(Role::class, $data, $id);
+                $create = DBHelpers::update_query(
+                    SchoolTermSession::class,
+                    $data,
+                    $id
+                );
 
                 if ($create) {
                     return ResponseHelper::success_response(
@@ -104,22 +130,29 @@ class RoleController extends Controller
         }
     }
 
-    public function roles()
+    public function terms()
     {
-        $roles = DBHelpers::all_data(Role::class);
+        $terms = DBHelpers::all_data(SchoolTermSession::class);
+        if (!$terms) {
+            return ResponseHelper::error_response(
+                'Get terms failed, Database retrival issues',
+                '',
+                401
+            );
+        }
 
         return ResponseHelper::success_response(
-            'All Roles fetched successful',
-            $roles
+            'All terms retrived successful',
+            $terms
         );
     }
 
     public function create(Request $request)
     {
         if ($request->isMethod('post')) {
-            $validate = RoleValidators::validate_rules(
+            $validate = SchoolTermSessionValidators::validate_rules(
                 $request,
-                'register_role'
+                'register_term'
             );
 
             if (!$validate->fails() && $validate->validated()) {
@@ -131,20 +164,23 @@ class RoleController extends Controller
                     'slug' => $slug,
                 ];
 
-                $create = DBHelpers::create_query(Role::class, $data);
+                $create = DBHelpers::create_query(
+                    SchoolTermSession::class,
+                    $data
+                );
 
-                if ($create) {
-                    return ResponseHelper::success_response(
-                        'Registration was successful',
-                        null
-                    );
-                } else {
+                if (!$create) {
                     return ResponseHelper::error_response(
                         'Registration failed, Database insertion issues',
                         '',
                         401
                     );
                 }
+
+                return ResponseHelper::success_response(
+                    'Registration was successful',
+                    null
+                );
             } else {
                 $errors = json_decode($validate->errors());
                 $props = ['name'];
