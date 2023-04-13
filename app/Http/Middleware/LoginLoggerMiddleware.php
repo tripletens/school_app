@@ -22,20 +22,22 @@ class LoginLoggerMiddleware
     {
         $response = $next($request);
 
-        // Perform action
-        $ip = $request->ip();
-        $current_location = Location::get($ip);
-        $server = $request->server();
+        if (Auth::check()) {
+            // Perform action
+            $ip = $request->ip();
+            $current_location = Location::get($ip);
+            $server = $request->server();
 
-        $data = [
-            'ip_address' => $request->ip(),
-            'browser' => $request->server('HTTP_USER_AGENT'),
-            'uid' => Auth::user()->id,
-            'location_data' => json_encode($current_location),
-            'login_date' => now(),
-        ];
+            $data = [
+                'ip_address' => $request->ip(),
+                'browser' => $request->server('HTTP_USER_AGENT'),
+                'uid' => Auth::user()->id,
+                'location_data' => json_encode($current_location),
+                'login_date' => now(),
+            ];
 
-        LoginLogger::create($data);
+            LoginLogger::create($data);
+        }
         return $response;
     }
 }
