@@ -11,6 +11,8 @@ use App\Validations\ErrorValidation;
 
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\ResponseHelper;
+use App\Models\Staff;
+use App\Models\Student;
 
 class AuthController extends Controller
 {
@@ -125,18 +127,36 @@ class AuthController extends Controller
     public function me()
     {
         $user = auth()->user();
+        $user->role = $this->role_data($user->role);
+        $user->extra_data = null;
 
-        $role_data = Role::where('id', $user->role)->exists()
-            ? Role::where('id', $user->role)
-                ->get()
-                ->first()
-            : null;
-        if ($role_data != null) {
-            $user->role_name = $role_data->name;
-            $user->role_slug = $role_data->slug;
+        if ($user->type == 'staff') {
+            $user->extra_data = $this->staff_data($user->id);
         }
 
         return response()->json($user);
+    }
+
+    public function role_data($role)
+    {
+        if (Role::where('id', $role)->exists()) {
+            return Role::where('id', $role)
+                ->get()
+                ->first();
+        } else {
+            return null;
+        }
+    }
+
+    public function staff_data($uid)
+    {
+        if (Staff::where('uid', $uid)->exists()) {
+            return Staff::where('uid', $uid)
+                ->get()
+                ->first();
+        } else {
+            return null;
+        }
     }
 
     /**
