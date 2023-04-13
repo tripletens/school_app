@@ -25,6 +25,62 @@ class AuthController extends Controller
         // ]);
     }
 
+    public function user_register(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $validate = AuthValidators::validate_rules(
+                $request,
+                'user_register'
+            );
+
+            if (!$validate->fails() && $validate->validated()) {
+                try {
+                    $register = User::create([
+                        'email' => $request->email,
+                        'password' => bcrypt($request->password),
+                        'type' => 'staff',
+                        'role' => $request->role,
+                    ]);
+
+                    if ($register) {
+                        return ResponseHelper::success_response(
+                            'Registration was successful',
+                            null
+                        );
+                    } else {
+                        return ResponseHelper::error_response(
+                            'Registration failed, Database insertion issues',
+                            $validate->errors(),
+                            401
+                        );
+                    }
+                } catch (Exception $e) {
+                    return ResponseHelper::error_response(
+                        'Server Error',
+                        $e->getMessage(),
+                        401
+                    );
+                }
+            } else {
+                $errors = json_decode($validate->errors());
+                $props = ['email', 'password', 'role'];
+                $error_res = ErrorValidation::arrange_error($errors, $props);
+
+                return ResponseHelper::error_response(
+                    'validation error',
+                    $error_res,
+                    401
+                );
+            }
+        } else {
+            return ResponseHelper::error_response(
+                'HTTP Request not allowed',
+                '',
+                404
+            );
+        }
+    }
+
     public function register(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -37,6 +93,7 @@ class AuthController extends Controller
                         'username' => $request->username,
                         'email' => $request->email,
                         'password' => bcrypt($request->password),
+                        'type' => 'staff',
                     ]);
 
                     if ($register) {

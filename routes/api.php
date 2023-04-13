@@ -121,6 +121,7 @@ Route::group(
     ],
     function ($router) {
         Route::post('/login', 'AuthController@login');
+        Route::post('/user-register', 'AuthController@user_register');
         //  Route::post('/register', 'AuthController@register');
     }
 );

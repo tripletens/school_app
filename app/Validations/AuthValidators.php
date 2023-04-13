@@ -23,6 +23,12 @@ class AuthValidators
                 'password' => 'required',
             ],
 
+            'user_register' => [
+                'role' => 'required',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:6',
+            ],
+
             'reset_password' => [
                 'password' => 'required',
                 'otp' => 'required',
