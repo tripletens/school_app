@@ -26,12 +26,10 @@ enum UserRoleEnum:int {
 
 
 enum UserStatusEnum:int {
-
     case Deactivated = 0;
     case Active = 1;
     case Suspended = 2;
     case Blocked = 3;
-
 
 }
 

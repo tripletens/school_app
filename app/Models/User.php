@@ -12,6 +12,8 @@ use App\Models\Role;
 use App\Models\Staff;
 use App\Models\Student;
 
+use App\Models\SchoolClass;
+
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -77,5 +79,10 @@ class User extends Authenticatable implements JWTSubject
     public function role()
     {
         return $this->hasOne(Role::class, 'id');
+    }
+
+    public function school_class()
+    {
+        return $this->hasOne(SchoolClass::class, 'staff');
     }
 }
