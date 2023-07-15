@@ -107,7 +107,6 @@ class RoleController extends Controller
     public function roles()
     {
         $roles = DBHelpers::all_data(Role::class);
-
         return ResponseHelper::success_response(
             'All Roles fetched successful',
             $roles

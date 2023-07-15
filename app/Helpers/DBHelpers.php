@@ -27,7 +27,8 @@ class DBHelpers
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
             );
         }
     }
@@ -40,7 +41,8 @@ class DBHelpers
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
             );
         }
     }
@@ -65,7 +67,8 @@ class DBHelpers
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
             );
         }
     }
@@ -81,7 +84,8 @@ class DBHelpers
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
             );
         }
     }
@@ -94,7 +98,8 @@ class DBHelpers
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
             );
         }
     }
@@ -110,7 +115,8 @@ class DBHelpers
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
             );
         }
     }
@@ -137,7 +143,8 @@ class DBHelpers
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
             );
         }
     }
@@ -151,7 +158,8 @@ class DBHelpers
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
             );
         }
     }
@@ -165,7 +173,8 @@ class DBHelpers
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
             );
         }
     }
@@ -179,7 +188,8 @@ class DBHelpers
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
             );
         }
     }
@@ -193,7 +203,62 @@ class DBHelpers
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
+            );
+        }
+    }
+
+    /////// update query v1 //////
+    public static function update_query_v2($dataModel, $data, $id = 0)
+    {
+        DB::beginTransaction();
+
+        try {
+            if ($id != 0) {
+                $status = $dataModel
+                    ::where([
+                        'id' => $id,
+                    ])
+                    ->update($data);
+
+                DB::commit(); // execute the operations above and commit transaction
+
+                return $status;
+            } else {
+                return null;
+            }
+        } catch (Exception $e) {
+            return ResponseHelper::error_response(
+                'Server Error',
+                $e->getMessage(),
+                401,
+                $e->getLine()
+            );
+        }
+    }
+
+    ////// Update flexible /////
+    public static function update_query_v3($dataModel, $data, $filter = null)
+    {
+        DB::beginTransaction();
+        $status = null;
+
+        try {
+            if ($filter != null) {
+                $status = $dataModel::where($filter)->update($data);
+                DB::commit(); // execute the operations above and commit transaction
+            } else {
+                $status = $dataModel::query()->update($data);
+                DB::commit(); // execute the operations above and commit transaction
+            }
+            return $status;
+        } catch (Exception $e) {
+            return ResponseHelper::error_response(
+                'Server Error',
+                $e->getMessage(),
+                401,
+                $e->getLine()
             );
         }
     }
@@ -201,17 +266,24 @@ class DBHelpers
     /////// Update query data
     public static function update_query($dataModel, $data, $id = 0)
     {
+        DB::beginTransaction();
+        $status = null;
+
         try {
-            if ($id == null) {
-                return $dataModel::query()->update($data);
+            if ($id != 0) {
+                $status = $dataModel::where('id', $id)->update($data);
+                DB::commit(); // execute the operations above and commit transaction
             } else {
-                return $dataModel::where('id', $id)->update($data);
+                $status = $dataModel::query()->update($data);
+                DB::commit(); // execute the operations above and commit transaction
             }
+            return $status;
         } catch (Exception $e) {
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
             );
         }
     }
@@ -225,7 +297,8 @@ class DBHelpers
             return ResponseHelper::error_response(
                 'Server Error',
                 $e->getMessage(),
-                401
+                401,
+                $e->getLine()
             );
         }
     }
