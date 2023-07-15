@@ -117,7 +117,7 @@ Route::group(
             function ($router) {
                 Route::post('/create', 'ClassLevelController@create');
                 Route::post('/update', 'ClassLevelController@update');
-                Route::post('/active', 'ClassLevelController@active_provider');
+                Route::post('/activate', 'ClassLevelController@activate');
                 Route::post('/deactivate', 'ClassLevelController@deactivate');
                 Route::get('/index', 'ClassLevelController@index');
             }

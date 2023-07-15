@@ -25,7 +25,11 @@ class ClassLevelValidator
                 'id' => 'required',
                 'name' => 'required|unique:class_level',
             ],
-            'active' => [
+
+            'activate' => [
+                'id' => 'required',
+            ],
+            'deactivate' => [
                 'id' => 'required',
             ],
         ];
