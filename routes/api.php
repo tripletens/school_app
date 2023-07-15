@@ -75,6 +75,26 @@ Route::group(
         'namespace' => 'App\Http\Controllers\Admin',
     ],
     function ($router) {
+        // EMAIL TEMPLATE SETTINGS ///////
+        Route::group(
+            [
+                'prefix' => 'email-template',
+            ],
+            function ($router) {
+                Route::post('/create', 'EmailTemplateController@create');
+                Route::post('/update', 'EmailTemplateController@update');
+                Route::post(
+                    '/active',
+                    'EmailTemplateController@active_provider'
+                );
+                Route::post(
+                    '/deactivate',
+                    'EmailTemplateController@deactivate'
+                );
+                Route::get('/index', 'EmailTemplateController@index');
+            }
+        );
+
         // SMS SERVICES SETTINGS ///////
         Route::group(
             [
