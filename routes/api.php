@@ -106,6 +106,11 @@ Route::group(
                 Route::post('/active', 'SmsServicesController@active_provider');
                 Route::post('/deactivate', 'SmsServicesController@deactivate');
                 Route::get('/index', 'SmsServicesController@index');
+                Route::get('/termii', 'SmsServicesController@send_sms');
+                Route::get(
+                    '/balance/{provider}',
+                    'SmsServicesController@balance'
+                );
             }
         );
 

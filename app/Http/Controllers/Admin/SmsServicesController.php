@@ -9,10 +9,136 @@ use App\Validations\ErrorValidation;
 use App\Helpers\DBHelpers;
 use App\Helpers\ResponseHelper;
 use App\Models\SmsServices;
+use App\Models\ServiceProviders;
+use App\Services\Termii;
 
 class SmsServicesController extends Controller
 {
     //
+
+    public function balance($provider)
+    {
+        $data = DBHelpers::query_filter_first(SmsServices::class, [
+            'name' => $provider,
+        ]);
+
+        if (!$data) {
+            return ResponseHelper::error_response(
+                'SMS service provider, no avaliable',
+                '',
+                401
+            );
+        }
+
+        $name = $data->name;
+        $api_key = $data->api_key;
+        switch ($name) {
+            case 'termii':
+                $res = Termii::balance($api_key);
+                $res = json_decode($res);
+                if (isset($res->balance)) {
+                    return ResponseHelper::success_response(
+                        'SMS balance fetched successful',
+                        $res
+                    );
+                } else {
+                    return ResponseHelper::error_response(
+                        'Error trying to retrive SMS balance, try again',
+                        null,
+                        401
+                    );
+                }
+
+                break;
+
+            default:
+                return ResponseHelper::error_response(
+                    'No Service provider (SMS), not available in the system, add on the settings page',
+                    '',
+                    401
+                );
+                break;
+        }
+    }
+
+    public static function provider_active()
+    {
+        $active = DBHelpers::query_filter_first(SmsServices::class, [
+            'is_active' => 1,
+        ]);
+
+        if (!$active) {
+            return ResponseHelper::error_response(
+                'No active SMS service provider, activate on the settings page',
+                '',
+                401
+            );
+        }
+
+        return $active;
+    }
+
+    public static function service_provider_exists($name)
+    {
+        return DBHelpers::exists(ServiceProviders::class, ['name' => $name]);
+    }
+
+    public static function termii($data)
+    {
+        $api_key = $data->api_key;
+        $data = [
+            'api_key' => $api_key,
+            'to' => '2348134873993',
+            'from' => 'fastbeep',
+            'sms' => 'Hi there, testing Termii ',
+            'type' => 'plain',
+            'channel' => 'generic',
+        ];
+
+        $data = json_encode($data);
+        return Termii::send($data);
+    }
+
+    public function send_sms()
+    {
+        if (!SmsServicesController::service_provider_exists('sms')) {
+            return ResponseHelper::error_response(
+                'Service provider (SMS), not available in the system, add on the settings page',
+                '',
+                401
+            );
+        }
+
+        $provider = SmsServicesController::provider_active();
+        $name = $provider->name;
+
+        switch ($name) {
+            case 'termii':
+                $res = SmsServicesController::termii($provider);
+                if (isset($res->code) && $res->code == 'ok') {
+                    return ResponseHelper::success_response(
+                        'SMS sent successful',
+                        $res
+                    );
+                } else {
+                    return ResponseHelper::error_response(
+                        'Sms not sent',
+                        $res,
+                        401
+                    );
+                }
+
+                break;
+
+            default:
+                return ResponseHelper::error_response(
+                    'No Service provider (SMS), not available in the system, add on the settings page',
+                    '',
+                    401
+                );
+                break;
+        }
+    }
 
     public function index()
     {
