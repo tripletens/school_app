@@ -25,7 +25,10 @@ class ClassCategoryValidator
                 'id' => 'required',
                 'name' => 'required|unique:class_category',
             ],
-            'active' => [
+            'activate' => [
+                'id' => 'required',
+            ],
+            'deactivate' => [
                 'id' => 'required',
             ],
         ];

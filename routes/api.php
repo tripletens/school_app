@@ -38,20 +38,6 @@ Route::group(
     }
 );
 
-// SCHOOL CLASSES
-Route::group(
-    [
-        'middleware' => ['jwt.verify', 'admin.access'],
-        'prefix' => 'admin/school-class',
-        'namespace' => 'App\Http\Controllers',
-    ],
-    function ($router) {
-        Route::get('/classes', 'SchoolClassController@classes');
-        Route::post('/create', 'SchoolClassController@register_class');
-        Route::put('/update', 'SchoolClassController@update');
-    }
-);
-
 /////// SCHOOL TERM SESSION CRUD
 Route::group(
     [
@@ -75,6 +61,18 @@ Route::group(
         'namespace' => 'App\Http\Controllers\Admin',
     ],
     function ($router) {
+        ////// SCHOOL CLASSES ////////
+        Route::group(
+            [
+                'prefix' => 'school-class',
+            ],
+            function ($router) {
+                Route::get('/classes', 'SchoolClassController@classes');
+                Route::post('/create', 'SchoolClassController@create');
+                Route::put('/update', 'SchoolClassController@update');
+            }
+        );
+
         // EMAIL TEMPLATE SETTINGS ///////
         Route::group(
             [
@@ -114,7 +112,7 @@ Route::group(
             }
         );
 
-        // CLASS LEVEL SETTINGS ///////
+        ////// CLASS LEVEL SETTINGS ///////
         Route::group(
             [
                 'prefix' => 'class-level',
@@ -125,6 +123,23 @@ Route::group(
                 Route::post('/activate', 'ClassLevelController@activate');
                 Route::post('/deactivate', 'ClassLevelController@deactivate');
                 Route::get('/index', 'ClassLevelController@index');
+            }
+        );
+
+        ////// CLASS CATEGORY SETTINGS ///////
+        Route::group(
+            [
+                'prefix' => 'class-category',
+            ],
+            function ($router) {
+                Route::post('/create', 'ClassCategoryController@create');
+                Route::post('/update', 'ClassCategoryController@update');
+                Route::post('/activate', 'ClassCategoryController@activate');
+                Route::post(
+                    '/deactivate',
+                    'ClassCategoryController@deactivate'
+                );
+                Route::get('/index', 'ClassCategoryController@index');
             }
         );
 

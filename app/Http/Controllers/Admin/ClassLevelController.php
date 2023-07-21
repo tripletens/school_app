@@ -16,10 +16,10 @@ class ClassLevelController extends Controller
 
     public function index()
     {
-        $sms = DBHelpers::all_data(ClassLevel::class);
+        $class_level = DBHelpers::all_data(ClassLevel::class);
         return ResponseHelper::success_response(
             'All Class Level fetched successful',
-            $sms
+            $class_level
         );
     }
 
@@ -28,10 +28,14 @@ class ClassLevelController extends Controller
         if ($request->isMethod('post')) {
             $validate = $val->validate_rules($request, 'create');
             if (!$validate->fails() && $validate->validated()) {
-                $create = DBHelpers::create_query(
-                    ClassLevel::class,
-                    $request->all()
-                );
+                $name = $request->name;
+                $slug = str_replace(' ', '_', $request->name);
+                $data = [
+                    'name' => $name,
+                    'slug' => $slug,
+                ];
+
+                $create = DBHelpers::create_query(ClassLevel::class, $data);
                 if ($create) {
                     return ResponseHelper::success_response(
                         'Class level added successful',

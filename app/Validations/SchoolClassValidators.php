@@ -18,17 +18,21 @@ class SchoolClassValidators
     public static function validate_rules($request, string $arg)
     {
         self::$validation_rules = [
-            'register_class' => [
+            'create' => [
                 'name' => 'required|unique:school_class',
                 'arm' => 'required',
                 'staff' => 'required',
+                'class_level' => 'required',
+                'class_category' => 'required',
             ],
 
-            'update_class' => [
+            'update' => [
                 'name' => 'required',
                 'arm' => 'required',
                 'staff' => 'required',
                 'id' => 'required',
+                'class_level' => 'required',
+                'class_category' => 'required',
             ],
         ];
 

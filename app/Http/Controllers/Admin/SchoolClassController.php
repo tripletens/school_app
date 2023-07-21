@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
 use App\Models\SchoolClass;
@@ -15,10 +16,10 @@ class SchoolClassController extends Controller
 
     public function update(Request $request)
     {
-        if ($request->isMethod('put')) {
+        if ($request->isMethod('post')) {
             $validate = SchoolClassValidators::validate_rules(
                 $request,
-                'update_class'
+                'update'
             );
 
             if (!$validate->fails() && $validate->validated()) {
@@ -38,10 +39,18 @@ class SchoolClassController extends Controller
                     );
                 }
 
-                $update = DBHelpers::update_query(
+                $update = DBHelpers::update_query_v2(
                     SchoolClass::class,
-                    $data,
-                    $id
+                    $request->only([
+                        'name',
+                        'arm',
+                        'staff',
+                        'class_level',
+                        'class_category',
+                        'report_card_template',
+                        'mid_term_template',
+                    ]),
+                    $request->id
                 );
 
                 if (!$update) {
@@ -58,7 +67,14 @@ class SchoolClassController extends Controller
                 );
             } else {
                 $errors = json_decode($validate->errors());
-                $props = ['name', 'arm', 'staff', 'id'];
+                $props = [
+                    'name',
+                    'arm',
+                    'staff',
+                    'id',
+                    'class_level',
+                    'class_category',
+                ];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
 
                 return ResponseHelper::error_response(
@@ -76,23 +92,19 @@ class SchoolClassController extends Controller
         }
     }
 
-    public function register_class(Request $request)
+    public function create(Request $request)
     {
         if ($request->isMethod('post')) {
             $validate = SchoolClassValidators::validate_rules(
                 $request,
-                'register_class'
+                'create'
             );
 
             if (!$validate->fails() && $validate->validated()) {
-                $data = [
-                    'name' => $request->name,
-                    'arm' => $request->arm,
-                    'staff' => $request->staff,
-                    'no_of_students' => 0,
-                ];
-
-                $create = DBHelpers::create_query(SchoolClass::class, $data);
+                $create = DBHelpers::create_query(
+                    SchoolClass::class,
+                    $request->all()
+                );
 
                 if ($create) {
                     return ResponseHelper::success_response(
@@ -108,7 +120,13 @@ class SchoolClassController extends Controller
                 }
             } else {
                 $errors = json_decode($validate->errors());
-                $props = ['name', 'arm', 'staff'];
+                $props = [
+                    'name',
+                    'arm',
+                    'staff',
+                    'class_level',
+                    'class_category',
+                ];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
 
                 return ResponseHelper::error_response(
