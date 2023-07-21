@@ -34,6 +34,12 @@ class SchoolClassValidators
                 'class_level' => 'required',
                 'class_category' => 'required',
             ],
+            'activate' => [
+                'id' => 'required',
+            ],
+            'deactivate' => [
+                'id' => 'required',
+            ],
         ];
 
         return Func::run_validation($request, self::$validation_rules[$arg]);

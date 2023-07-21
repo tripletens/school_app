@@ -16,7 +16,9 @@ class EmailTemplateController extends Controller
 
     public function index()
     {
-        $email = DBHelpers::all_data(EmailTemplate::class);
+        $email = DBHelpers::query_filter(EmailTemplate::class, [
+            'is_active' => 1,
+        ]);
         return ResponseHelper::success_response(
             'All email template fetched successful',
             $email

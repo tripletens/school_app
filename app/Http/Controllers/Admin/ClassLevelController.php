@@ -16,7 +16,9 @@ class ClassLevelController extends Controller
 
     public function index()
     {
-        $class_level = DBHelpers::all_data(ClassLevel::class);
+        $class_level = DBHelpers::query_filter(ClassLevel::class, [
+            'is_active' => 1,
+        ]);
         return ResponseHelper::success_response(
             'All Class Level fetched successful',
             $class_level
@@ -71,24 +73,37 @@ class ClassLevelController extends Controller
     public function activate(Request $request, ClassLevelValidator $val)
     {
         if ($request->isMethod('post')) {
-            $update = DBHelpers::update_query(
-                ClassLevel::class,
-                ['is_active' => 1],
-                $request->id
-            );
+            $validate = $val->validate_rules($request, 'deactivate');
+            if (!$validate->fails() && $validate->validated()) {
+                $update = DBHelpers::update_query(
+                    ClassLevel::class,
+                    ['is_active' => 1],
+                    $request->id
+                );
 
-            if (!$update) {
+                if (!$update) {
+                    return ResponseHelper::error_response(
+                        'Activation failed, Database updated issues',
+                        '',
+                        401
+                    );
+                }
+
+                return ResponseHelper::success_response(
+                    'Class level activated successful',
+                    null
+                );
+            } else {
+                $errors = json_decode($validate->errors());
+                $props = ['id'];
+                $error_res = ErrorValidation::arrange_error($errors, $props);
+
                 return ResponseHelper::error_response(
-                    'Activation failed, Database updated issues',
-                    '',
+                    'validation error',
+                    $error_res,
                     401
                 );
             }
-
-            return ResponseHelper::success_response(
-                'Class level activated successful',
-                null
-            );
         } else {
             return ResponseHelper::error_response(
                 'HTTP Request not allowed',
@@ -101,24 +116,37 @@ class ClassLevelController extends Controller
     public function deactivate(Request $request, ClassLevelValidator $val)
     {
         if ($request->isMethod('post')) {
-            $update = DBHelpers::update_query(
-                ClassLevel::class,
-                ['is_active' => 0],
-                $request->id
-            );
+            $validate = $val->validate_rules($request, 'deactivate');
+            if (!$validate->fails() && $validate->validated()) {
+                $update = DBHelpers::update_query(
+                    ClassLevel::class,
+                    ['is_active' => 0],
+                    $request->id
+                );
 
-            if (!$update) {
+                if (!$update) {
+                    return ResponseHelper::error_response(
+                        'Deactivation failed, Database updated issues',
+                        '',
+                        401
+                    );
+                }
+
+                return ResponseHelper::success_response(
+                    'Class level deactivated successful',
+                    null
+                );
+            } else {
+                $errors = json_decode($validate->errors());
+                $props = ['id'];
+                $error_res = ErrorValidation::arrange_error($errors, $props);
+
                 return ResponseHelper::error_response(
-                    'Deactivation failed, Database updated issues',
-                    '',
+                    'validation error',
+                    $error_res,
                     401
                 );
             }
-
-            return ResponseHelper::success_response(
-                'Class level deactivated successful',
-                null
-            );
         } else {
             return ResponseHelper::error_response(
                 'HTTP Request not allowed',
