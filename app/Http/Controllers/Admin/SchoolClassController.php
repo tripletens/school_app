@@ -237,4 +237,13 @@ class SchoolClassController extends Controller
         ]);
         return ResponseHelper::success_response('All school classes', $classes);
     }
+
+    public function index()
+    {
+        $classes = DBHelpers::with_query(SchoolClass::class, [
+            'level',
+            'category',
+        ]);
+        return ResponseHelper::success_response('All school classes', $classes);
+    }
 }

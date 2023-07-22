@@ -34,4 +34,14 @@ class SchoolClass extends Model
     {
         return $this->belongsTo(User::class, 'staff');
     }
+
+    public function level()
+    {
+        return $this->hasOne(ClassLevel::class, 'id', 'class_level');
+    }
+
+    public function category()
+    {
+        return $this->hasOne(ClassCategory::class, 'id', 'class_category');
+    }
 }

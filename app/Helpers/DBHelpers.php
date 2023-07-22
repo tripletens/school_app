@@ -110,6 +110,7 @@ class DBHelpers
             return $dataModel
                 ::query()
                 ->with($with_clause)
+                ->orderBy('id', 'DESC')
                 ->get();
         } catch (Exception $e) {
             return ResponseHelper::error_response(
@@ -153,7 +154,28 @@ class DBHelpers
     public static function query_filter($dataModel, $filter)
     {
         try {
-            return $dataModel::where($filter)->get();
+            return $dataModel
+                ::where($filter)
+                ->orderBy('id', 'DESC')
+                ->get();
+        } catch (Exception $e) {
+            return ResponseHelper::error_response(
+                'Server Error',
+                $e->getMessage(),
+                401,
+                $e->getLine()
+            );
+        }
+    }
+
+    //////  query order by
+    public static function query_order_by_desc($dataModel)
+    {
+        try {
+            return $dataModel
+                ::query()
+                ->orderBy('id', 'DESC')
+                ->get();
         } catch (Exception $e) {
             return ResponseHelper::error_response(
                 'Server Error',

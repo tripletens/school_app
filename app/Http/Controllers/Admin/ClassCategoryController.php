@@ -16,9 +16,8 @@ class ClassCategoryController extends Controller
 
     public function index()
     {
-        $category = DBHelpers::query_filter(ClassCategory::class, [
-            'is_active' => 1,
-        ]);
+        $category = DBHelpers::query_order_by_desc(ClassCategory::class);
+
         return ResponseHelper::success_response(
             'All class category fetched successful',
             $category

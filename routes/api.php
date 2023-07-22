@@ -68,6 +68,7 @@ Route::group(
             ],
             function ($router) {
                 Route::get('/classes', 'SchoolClassController@classes');
+                Route::get('/index', 'SchoolClassController@index');
                 Route::post('/create', 'SchoolClassController@create');
                 Route::post('/update', 'SchoolClassController@update');
                 Route::post('/activate', 'SchoolClassController@activate');
