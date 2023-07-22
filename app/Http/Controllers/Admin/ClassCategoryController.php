@@ -14,6 +14,17 @@ class ClassCategoryController extends Controller
 {
     //
 
+    public function active_categorys()
+    {
+        $category = DBHelpers::query_filter(ClassCategory::class, [
+            'is_active' => 1,
+        ]);
+        return ResponseHelper::success_response(
+            'All active class categorys',
+            $category
+        );
+    }
+
     public function index()
     {
         $category = DBHelpers::query_order_by_desc(ClassCategory::class);

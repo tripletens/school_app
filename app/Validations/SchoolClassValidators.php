@@ -21,7 +21,7 @@ class SchoolClassValidators
             'create' => [
                 'name' => 'required|unique:school_class',
                 'arm' => 'required',
-                'staff' => 'required',
+                // 'staff' => 'required',
                 'class_level' => 'required',
                 'class_category' => 'required',
             ],

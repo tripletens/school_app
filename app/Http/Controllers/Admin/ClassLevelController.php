@@ -14,6 +14,17 @@ class ClassLevelController extends Controller
 {
     //
 
+    public function active_levels()
+    {
+        $levels = DBHelpers::query_filter(ClassLevel::class, [
+            'is_active' => 1,
+        ]);
+        return ResponseHelper::success_response(
+            'All active class levels',
+            $levels
+        );
+    }
+
     public function index()
     {
         $class_level = DBHelpers::query_order_by_desc(ClassLevel::class);

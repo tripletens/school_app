@@ -126,6 +126,10 @@ Route::group(
                 Route::post('/activate', 'ClassLevelController@activate');
                 Route::post('/deactivate', 'ClassLevelController@deactivate');
                 Route::get('/index', 'ClassLevelController@index');
+                Route::get(
+                    '/active-levels',
+                    'ClassLevelController@active_levels'
+                );
             }
         );
 
@@ -143,6 +147,11 @@ Route::group(
                     'ClassCategoryController@deactivate'
                 );
                 Route::get('/index', 'ClassCategoryController@index');
+
+                Route::get(
+                    '/active-categorys',
+                    'ClassCategoryController@active_categorys'
+                );
             }
         );
 
