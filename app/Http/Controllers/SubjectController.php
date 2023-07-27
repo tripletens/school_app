@@ -37,7 +37,6 @@ class SubjectController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
@@ -100,9 +99,62 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function fetch_one_subject(Request $request)
     {
         //
+
+        if ($request->isMethod('get')) {
+            $validate = SubjectValidators::validate_rules(
+                $request,
+                'fetch_subject_by_id'
+            );
+
+            if (!$validate->fails() && $validate->validated()) {
+
+                $id = $request->id;
+
+                $data = [
+                    "id" => $id,
+                ];
+
+
+                if (!DBHelpers::exists(Subject::class, ['id' => $id])) {
+                    return ResponseHelper::error_response(
+                        'Update failed, Subject not found',
+                        '',
+                        401
+                    );
+                }
+
+                $subject = DBHelpers::query_filter_first(Subject::class,[
+                    "id" => $id,
+                ]);
+
+                return ResponseHelper::success_response(
+                    'Subject fetched successful',
+                    $subject
+                );
+
+            } else {
+                $errors = json_decode($validate->errors());
+                $props = [
+                    "id",
+                ];
+                $error_res = ErrorValidation::arrange_error($errors, $props);
+
+                return ResponseHelper::error_response(
+                    'validation error',
+                    $error_res,
+                    401
+                );
+            }
+        } else {
+            return ResponseHelper::error_response(
+                'HTTP Request not allowed',
+                '',
+                404
+            );
+        }
     }
 
     /**
@@ -132,40 +184,42 @@ class SubjectController extends Controller
             );
 
             if (!$validate->fails() && $validate->validated()) {
-                $title = $request->title;
-                $description = $request->description;
                 $id = $request->id;
 
                 $data = [
-                    "title" => $title,
-                    "description" => $description
+                    'title' => $request->title,
+                    'description' => $request->description,
                 ];
 
+                if (!DBHelpers::exists(Subject::class, ['id' => $id])) {
+                    return ResponseHelper::error_response(
+                        'Update failed, Subject not found',
+                        '',
+                        401
+                    );
+                }
+
                 $update = DBHelpers::update_query(
-                    Student::class,
+                    Subject::class,
                     $data,
                     $id
                 );
 
-                if ($update) {
-                    return ResponseHelper::success_response(
-                        'Update was successful',
-                        null
-                    );
-                } else {
+                if (!$update) {
                     return ResponseHelper::error_response(
                         'Update failed, Database insertion issues',
                         '',
                         401
                     );
                 }
+
+                return ResponseHelper::success_response(
+                    'Update was successful',
+                    null
+                );
             } else {
                 $errors = json_decode($validate->errors());
-                $props = [
-                    "title",
-                    "description",
-                    "id",
-                ];
+                $props = ['title', 'description'];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
 
                 return ResponseHelper::error_response(
@@ -182,6 +236,7 @@ class SubjectController extends Controller
             );
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

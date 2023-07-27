@@ -151,6 +151,8 @@ Route::group(
         Route::put('/update', 'SubjectController@update');
         Route::delete('/delete', 'SubjectController@destroy');
         Route::get('/all', 'SubjectController@index');
+        Route::get('/fetch-one-subject', 'SubjectController@fetch_one_subject');
+
     }
 );
 

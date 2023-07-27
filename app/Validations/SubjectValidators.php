@@ -32,6 +32,10 @@ class SubjectValidators
             'delete_subject' => [
                 'id' => 'required',
             ],
+
+            "fetch_subject_by_id" => [
+                'id' => 'required',
+            ]
         ];
 
         return Func::run_validation($request, self::$validation_rules[$arg]);
