@@ -139,6 +139,21 @@ Route::group(
     }
 );
 
+/////// Subject CRUD
+Route::group(
+    [
+        'middleware' => ['jwt.verify', 'admin.access'],
+        'prefix' => 'subject',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::post('/add', 'SubjectController@store');
+        Route::put('/update', 'SubjectController@update');
+        Route::delete('/delete', 'SubjectController@destroy');
+        Route::get('/all', 'SubjectController@index');
+    }
+);
+
 // ************************************
 
 // USERS SECTION
@@ -156,3 +171,5 @@ Route::group(
         Route::get('/dashboard', 'UserController@dashboard');
     }
 );
+
+
