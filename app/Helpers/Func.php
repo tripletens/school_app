@@ -33,6 +33,7 @@ class Func
             $sessions_years = $start_year + $i . '/' . $start_year + $add;
             array_push($yearly, $sessions_years);
         }
+        
         array_push($yearly, $next_session);
 
         return $yearly;

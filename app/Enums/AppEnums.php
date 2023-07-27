@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 namespace App\Enums;
 
 
@@ -13,16 +10,13 @@ enum UserType:string{
 }
 
 
-
 enum UserRoleEnum:int {
     case Admin = 1;
     case Finance = 2;
     case Teacher = 3;
     case NonTeacher = 4;
     case Inventory = 5;
-
 }
-
 
 
 enum UserStatusEnum:int {
@@ -30,7 +24,6 @@ enum UserStatusEnum:int {
     case Active = 1;
     case Suspended = 2;
     case Blocked = 3;
-
 }
 
 
