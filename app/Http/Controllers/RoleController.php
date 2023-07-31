@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
 use App\Models\Role;
+use App\Models\User;
 use App\Helpers\DBHelpers;
 use App\Validations\RoleValidators;
 use App\Validations\ErrorValidation;
@@ -25,7 +26,7 @@ class RoleController extends Controller
 
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Delete was successful',
+                        'Delete was successfully',
                         null
                     );
                 } else {
@@ -74,7 +75,7 @@ class RoleController extends Controller
 
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Update was successful',
+                        'Update was successfully',
                         null
                     );
                 } else {
@@ -104,12 +105,17 @@ class RoleController extends Controller
         }
     }
 
-    public function roles()
+    public function index()
     {
         $roles = DBHelpers::all_data(Role::class);
+        foreach ($roles as $value) {
+            $value->count = DBHelpers::count(User::class, [
+                'role' => $value->id,
+            ]);
+        }
 
         return ResponseHelper::success_response(
-            'All Roles fetched successful',
+            'All Roles fetched successfully',
             $roles
         );
     }
@@ -135,7 +141,7 @@ class RoleController extends Controller
 
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Registration was successful',
+                        'Registration was successfully',
                         null
                     );
                 } else {

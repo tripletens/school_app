@@ -3,15 +3,15 @@
  *
  *
  * @category Validations
- * @author	Champa
- * @copyright Copyright (c) 2022. All right reserved
+ * @author	School Mgt Portal
+ * @copyright Copyright (c) 2023. All right reserved
  * @version	1.0
  */
 
 namespace App\Validations;
 use App\Helpers\Func;
 
-class SchoolClassValidators
+class ClassLevelValidator
 {
     protected static $validation_rules = [];
 
@@ -19,21 +19,13 @@ class SchoolClassValidators
     {
         self::$validation_rules = [
             'create' => [
-                'name' => 'required|unique:school_class',
-                'arm' => 'required',
-                // 'staff' => 'required',
-                'class_level' => 'required',
-                'class_category' => 'required',
+                'name' => 'required|unique:class_level',
+            ],
+            'update' => [
+                'id' => 'required',
+                'name' => 'required|unique:class_level',
             ],
 
-            'update' => [
-                'name' => 'required',
-                'arm' => 'required',
-                'staff' => 'required',
-                'id' => 'required',
-                'class_level' => 'required',
-                'class_category' => 'required',
-            ],
             'activate' => [
                 'id' => 'required',
             ],

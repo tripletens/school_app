@@ -38,20 +38,6 @@ Route::group(
     }
 );
 
-// SCHOOL CLASSES
-Route::group(
-    [
-        'middleware' => ['jwt.verify', 'admin.access'],
-        'prefix' => 'admin/school-class',
-        'namespace' => 'App\Http\Controllers',
-    ],
-    function ($router) {
-        Route::get('/classes', 'SchoolClassController@classes');
-        Route::post('/create', 'SchoolClassController@register_class');
-        Route::put('/update', 'SchoolClassController@update');
-    }
-);
-
 /////// SCHOOL TERM SESSION CRUD
 Route::group(
     [
@@ -67,7 +53,166 @@ Route::group(
     }
 );
 
-/////// SCHOOL SESSION CRUD
+// ADMIN SECTIONS ///////
+Route::group(
+    [
+        'middleware' => ['jwt.verify', 'admin.access'],
+        'prefix' => 'admin',
+        'namespace' => 'App\Http\Controllers\Admin',
+    ],
+    function ($router) {
+        ////// SCHOOL CLASSES ////////
+        Route::group(
+            [
+                'prefix' => 'school-class',
+            ],
+            function ($router) {
+                Route::get('/classes', 'SchoolClassController@classes');
+                Route::get('/index', 'SchoolClassController@index');
+                Route::post('/create', 'SchoolClassController@create');
+                Route::post('/update', 'SchoolClassController@update');
+                Route::post('/activate', 'SchoolClassController@activate');
+                Route::post('/deactivate', 'SchoolClassController@deactivate');
+            }
+        );
+
+        // EMAIL TEMPLATE SETTINGS ///////
+        Route::group(
+            [
+                'prefix' => 'email-template',
+            ],
+            function ($router) {
+                Route::post('/create', 'EmailTemplateController@create');
+                Route::post('/update', 'EmailTemplateController@update');
+                Route::post(
+                    '/active',
+                    'EmailTemplateController@active_provider'
+                );
+                Route::post(
+                    '/deactivate',
+                    'EmailTemplateController@deactivate'
+                );
+                Route::get('/index', 'EmailTemplateController@index');
+            }
+        );
+
+        // SMS SERVICES SETTINGS ///////
+        Route::group(
+            [
+                'prefix' => 'sms-services',
+            ],
+            function ($router) {
+                Route::post('/create', 'SmsServicesController@create');
+                Route::post('/update', 'SmsServicesController@update');
+                Route::post('/active', 'SmsServicesController@active_provider');
+                Route::post('/deactivate', 'SmsServicesController@deactivate');
+                Route::get('/index', 'SmsServicesController@index');
+                Route::get('/termii', 'SmsServicesController@send_sms');
+                Route::get(
+                    '/balance/{provider}',
+                    'SmsServicesController@balance'
+                );
+            }
+        );
+
+        ////// CLASS LEVEL SETTINGS ///////
+        Route::group(
+            [
+                'prefix' => 'class-level',
+            ],
+            function ($router) {
+                Route::post('/create', 'ClassLevelController@create');
+                Route::post('/update', 'ClassLevelController@update');
+                Route::post('/activate', 'ClassLevelController@activate');
+                Route::post('/deactivate', 'ClassLevelController@deactivate');
+                Route::get('/index', 'ClassLevelController@index');
+                Route::get(
+                    '/active-levels',
+                    'ClassLevelController@active_levels'
+                );
+            }
+        );
+
+        ////// CLASS CATEGORY SETTINGS ///////
+        Route::group(
+            [
+                'prefix' => 'class-category',
+            ],
+            function ($router) {
+                Route::post('/create', 'ClassCategoryController@create');
+                Route::post('/update', 'ClassCategoryController@update');
+                Route::post('/activate', 'ClassCategoryController@activate');
+                Route::post(
+                    '/deactivate',
+                    'ClassCategoryController@deactivate'
+                );
+                Route::get('/index', 'ClassCategoryController@index');
+
+                Route::get(
+                    '/active-categorys',
+                    'ClassCategoryController@active_categorys'
+                );
+            }
+        );
+
+        // SERVICES PROVIDERS SETTINGS ///////
+        Route::group(
+            [
+                'prefix' => 'service-providers',
+            ],
+            function ($router) {
+                Route::post('/create', 'ServiceProviderController@create');
+                Route::post('/update', 'ServiceProviderController@update');
+
+                Route::post('/activate', 'ServiceProviderController@activate');
+                Route::post(
+                    '/deactivate',
+                    'ServiceProviderController@deactivate'
+                );
+                Route::get('/index', 'ServiceProviderController@index');
+            }
+        );
+
+        // School Settings ///////
+        Route::group(
+            [
+                'prefix' => 'school-settings',
+            ],
+            function ($router) {
+                Route::post('/create', 'SchoolSettingsController@create');
+                Route::post('/update', 'SchoolSettingsController@update');
+                Route::get('/index', 'SchoolSettingsController@index');
+            }
+        );
+
+        // SMTP Settings ///////
+        Route::group(
+            [
+                'prefix' => 'smtp-settings',
+            ],
+            function ($router) {
+                Route::post('/create', 'SmtpSettingsController@create');
+                Route::post('/update', 'SmtpSettingsController@update');
+                Route::get('/index', 'SmtpSettingsController@index');
+                Route::put('/toggle', 'SmtpSettingsController@toggle');
+            }
+        );
+    }
+);
+
+// School Settings ///////
+Route::group(
+    [
+        'prefix' => 'system-settings',
+        'namespace' => 'App\Http\Controllers\Admin',
+    ],
+    function ($router) {
+        Route::get('/school', 'SchoolSettingsController@index');
+        Route::get('/smtp', 'SmtpSettingsController@index');
+    }
+);
+
+/////// SCHOOL SESSION CRUD //////
 Route::group(
     [
         'middleware' => ['jwt.verify', 'admin.access'],
@@ -100,18 +245,18 @@ Route::group(
 Route::group(
     [
         'middleware' => ['jwt.verify', 'admin.access'],
-        'prefix' => 'role',
+        'prefix' => 'admin',
         'namespace' => 'App\Http\Controllers',
     ],
     function ($router) {
         Route::post('/create', 'RoleController@create');
-        Route::get('/roles', 'RoleController@roles');
+        Route::get('/index', 'RoleController@index');
         Route::put('/role', 'RoleController@update');
         Route::delete('/delete', 'RoleController@delete');
     }
 );
 
-// Staff (Control and Manage Staff)
+// Staff (Control and Manage Staff) ///////
 Route::group(
     [
         'middleware' => ['jwt.verify', 'admin.access'],
@@ -125,7 +270,7 @@ Route::group(
     }
 );
 
-// routes action for users Auth
+// routes action for users Auth ////////
 Route::group(
     [
         'middleware' => ['api', 'login.logger'],
