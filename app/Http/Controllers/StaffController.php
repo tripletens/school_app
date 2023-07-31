@@ -67,7 +67,7 @@ class StaffController extends Controller
 
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Update was successful',
+                        'Update was successfully',
                         null
                     );
                 } else {
@@ -129,7 +129,7 @@ class StaffController extends Controller
 
                 if ($staff) {
                     return ResponseHelper::success_response(
-                        'Staff data retrived successful',
+                        'Staff data retrived successfully',
                         $staff
                     );
                 } else {
@@ -161,7 +161,7 @@ class StaffController extends Controller
         try {
             $staffs = Staff::with(['user', 'role'])->get();
             return ResponseHelper::success_response(
-                'All staffs fetched successful',
+                'All staffs fetched successfully',
                 $staffs
             );
         } catch (Exception $e) {
@@ -179,7 +179,7 @@ class StaffController extends Controller
             $staffs = Staff::with(['user', 'role'])->get();
 
             return ResponseHelper::success_response(
-                'All staffs fetched successful',
+                'All staffs fetched successfully',
                 $staffs
             );
         } catch (Exception $e) {
@@ -234,7 +234,7 @@ class StaffController extends Controller
 
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Registration was successful',
+                        'Registration was successfully',
                         null
                     );
                 } else {

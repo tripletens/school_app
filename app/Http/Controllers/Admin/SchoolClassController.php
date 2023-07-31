@@ -34,7 +34,7 @@ class SchoolClassController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Class activated successful',
+                    'Class activated successfully',
                     null
                 );
             } else {
@@ -77,7 +77,7 @@ class SchoolClassController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Class deactivated successful',
+                    'Class deactivated successfully',
                     null
                 );
             } else {
@@ -148,7 +148,7 @@ class SchoolClassController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Update was successful',
+                    'Update was successfully',
                     null
                 );
             } else {
@@ -194,7 +194,7 @@ class SchoolClassController extends Controller
 
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Registration was successful',
+                        'Registration was successfully',
                         null
                     );
                 } else {

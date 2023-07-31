@@ -43,7 +43,7 @@ class SchoolSessionController extends Controller
 
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Update was successful',
+                        'Update was successfully',
                         null
                     );
                 } else {
@@ -117,7 +117,7 @@ class SchoolSessionController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Update was successful',
+                    'Update was successfully',
                     null
                 );
             } else {
@@ -154,7 +154,7 @@ class SchoolSessionController extends Controller
         }
 
         return ResponseHelper::success_response(
-            'All school session was successful',
+            'All school session was successfully',
             $sessions
         );
     }
@@ -187,7 +187,7 @@ class SchoolSessionController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Registration was successful',
+                    'Registration was successfully',
                     null
                 );
             } else {

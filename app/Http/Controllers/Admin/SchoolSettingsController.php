@@ -18,7 +18,7 @@ class SchoolSettingsController extends Controller
     {
         $settings = DBHelpers::first_data(SchoolSettings::class);
         return ResponseHelper::success_response(
-            'School settings fetched successful',
+            'School settings fetched successfully',
             $settings
         );
     }
@@ -69,7 +69,7 @@ class SchoolSettingsController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Update was successful',
+                    'Update was successfully',
                     null
                 );
             } else {
@@ -111,7 +111,7 @@ class SchoolSettingsController extends Controller
                 );
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'School Settings added successful',
+                        'School Settings added successfully',
                         null
                     );
                 } else {

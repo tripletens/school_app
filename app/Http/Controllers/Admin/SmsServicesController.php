@@ -38,7 +38,7 @@ class SmsServicesController extends Controller
                 $res = json_decode($res);
                 if (isset($res->balance)) {
                     return ResponseHelper::success_response(
-                        'SMS balance fetched successful',
+                        'SMS balance fetched successfully',
                         $res
                     );
                 } else {
@@ -117,7 +117,7 @@ class SmsServicesController extends Controller
                 $res = SmsServicesController::termii($provider);
                 if (isset($res->code) && $res->code == 'ok') {
                     return ResponseHelper::success_response(
-                        'SMS sent successful',
+                        'SMS sent successfully',
                         $res
                     );
                 } else {
@@ -144,7 +144,7 @@ class SmsServicesController extends Controller
     {
         $sms = DBHelpers::all_data(SmsServices::class);
         return ResponseHelper::success_response(
-            'All SMS services fetched successful',
+            'All SMS services fetched successfully',
             $sms
         );
     }
@@ -160,7 +160,7 @@ class SmsServicesController extends Controller
                 );
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'SMS service added successful',
+                        'SMS service added successfully',
                         null
                     );
                 } else {
@@ -208,7 +208,7 @@ class SmsServicesController extends Controller
             }
 
             return ResponseHelper::success_response(
-                'All SMS services deactivated successful',
+                'All SMS services deactivated successfully',
                 null
             );
         } else {
@@ -259,7 +259,7 @@ class SmsServicesController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Activation was successful',
+                    'Activation was successfully',
                     null
                 );
             } else {
@@ -320,7 +320,7 @@ class SmsServicesController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Update was successful',
+                    'Update was successfully',
                     null
                 );
             } else {

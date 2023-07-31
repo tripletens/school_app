@@ -84,7 +84,7 @@ class SmtpSettingsController extends Controller
     {
         $settings = DBHelpers::first_data(StmpSettings::class);
         return ResponseHelper::success_response(
-            'SMTP settings fetched successful',
+            'SMTP settings fetched successfully',
             $settings
         );
     }
@@ -128,7 +128,7 @@ class SmtpSettingsController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Update was successful',
+                    'Update was successfully',
                     null
                 );
             } else {
@@ -170,7 +170,7 @@ class SmtpSettingsController extends Controller
                 );
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'SMTP Settings added successful',
+                        'SMTP Settings added successfully',
                         null
                     );
                 } else {

@@ -35,7 +35,7 @@ class ServiceProviderController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Service provider activated successful',
+                    'Service provider activated successfully',
                     null
                 );
             } else {
@@ -78,7 +78,7 @@ class ServiceProviderController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Service Provider deactivated successful',
+                    'Service Provider deactivated successfully',
                     null
                 );
             } else {
@@ -105,7 +105,7 @@ class ServiceProviderController extends Controller
     {
         $providers = DBHelpers::all_data(ServiceProviders::class);
         return ResponseHelper::success_response(
-            'All services providers fetched successful',
+            'All services providers fetched successfully',
             $providers
         );
     }

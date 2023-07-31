@@ -245,12 +245,12 @@ Route::group(
 Route::group(
     [
         'middleware' => ['jwt.verify', 'admin.access'],
-        'prefix' => 'role',
+        'prefix' => 'admin',
         'namespace' => 'App\Http\Controllers',
     ],
     function ($router) {
         Route::post('/create', 'RoleController@create');
-        Route::get('/roles', 'RoleController@roles');
+        Route::get('/index', 'RoleController@index');
         Route::put('/role', 'RoleController@update');
         Route::delete('/delete', 'RoleController@delete');
     }

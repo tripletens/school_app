@@ -40,7 +40,7 @@ class SchoolTermSessionController extends Controller
 
                 if ($activate) {
                     return ResponseHelper::success_response(
-                        'School term activated successful',
+                        'School term activated successfully',
                         null
                     );
                 } else {
@@ -103,7 +103,7 @@ class SchoolTermSessionController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Update was successful',
+                    'Update was successfully',
                     null
                 );
             } else {
@@ -138,7 +138,7 @@ class SchoolTermSessionController extends Controller
         }
 
         return ResponseHelper::success_response(
-            'All terms retrived successful',
+            'All terms retrived successfully',
             $terms
         );
     }
@@ -174,7 +174,7 @@ class SchoolTermSessionController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Registration was successful',
+                    'Registration was successfully',
                     null
                 );
             } else {

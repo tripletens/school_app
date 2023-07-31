@@ -29,7 +29,7 @@ class ClassLevelController extends Controller
     {
         $class_level = DBHelpers::query_order_by_desc(ClassLevel::class);
         return ResponseHelper::success_response(
-            'All Class Level fetched successful',
+            'All Class Level fetched successfully',
             $class_level
         );
     }
@@ -49,7 +49,7 @@ class ClassLevelController extends Controller
                 $create = DBHelpers::create_query(ClassLevel::class, $data);
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Class level added successful',
+                        'Class level added successfully',
                         null
                     );
                 } else {
@@ -99,7 +99,7 @@ class ClassLevelController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Class level activated successful',
+                    'Class level activated successfully',
                     null
                 );
             } else {
@@ -142,7 +142,7 @@ class ClassLevelController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Class level deactivated successful',
+                    'Class level deactivated successfully',
                     null
                 );
             } else {
@@ -198,7 +198,7 @@ class ClassLevelController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Update was successful',
+                    'Update was successfully',
                     null
                 );
             } else {

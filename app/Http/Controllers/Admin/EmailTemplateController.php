@@ -20,7 +20,7 @@ class EmailTemplateController extends Controller
             'is_active' => 1,
         ]);
         return ResponseHelper::success_response(
-            'All email template fetched successful',
+            'All email template fetched successfully',
             $email
         );
     }
@@ -36,7 +36,7 @@ class EmailTemplateController extends Controller
                 );
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Email Template added successful',
+                        'Email Template added successfully',
                         null
                     );
                 } else {
@@ -99,7 +99,7 @@ class EmailTemplateController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Update was successful',
+                    'Update was successfully',
                     null
                 );
             } else {

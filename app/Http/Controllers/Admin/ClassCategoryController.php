@@ -30,7 +30,7 @@ class ClassCategoryController extends Controller
         $category = DBHelpers::query_order_by_desc(ClassCategory::class);
 
         return ResponseHelper::success_response(
-            'All class category fetched successful',
+            'All class category fetched successfully',
             $category
         );
     }
@@ -50,7 +50,7 @@ class ClassCategoryController extends Controller
                 $create = DBHelpers::create_query(ClassCategory::class, $data);
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Class category added successful',
+                        'Class category added successfully',
                         null
                     );
                 } else {
@@ -100,7 +100,7 @@ class ClassCategoryController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Class category activated successful',
+                    'Class category activated successfully',
                     null
                 );
             } else {
@@ -143,7 +143,7 @@ class ClassCategoryController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Class category deactivated successful',
+                    'Class category deactivated successfully',
                     null
                 );
             } else {
@@ -199,7 +199,7 @@ class ClassCategoryController extends Controller
                 }
 
                 return ResponseHelper::success_response(
-                    'Update was successful',
+                    'Update was successfully',
                     null
                 );
             } else {

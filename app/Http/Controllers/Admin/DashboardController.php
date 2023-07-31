@@ -35,7 +35,7 @@ class DashboardController extends Controller
         ];
 
         return ResponseHelper::success_response(
-            'Admin Dashboard fetched successful',
+            'Admin Dashboard fetched successfully',
             $res_data
         );
     }
