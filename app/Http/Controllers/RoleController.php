@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
 use App\Models\Role;
+use App\Models\User;
 use App\Helpers\DBHelpers;
 use App\Validations\RoleValidators;
 use App\Validations\ErrorValidation;
@@ -107,6 +108,12 @@ class RoleController extends Controller
     public function index()
     {
         $roles = DBHelpers::all_data(Role::class);
+        foreach ($roles as $value) {
+            $value->count = DBHelpers::count(User::class, [
+                'role' => $value->id,
+            ]);
+        }
+
         return ResponseHelper::success_response(
             'All Roles fetched successfully',
             $roles
