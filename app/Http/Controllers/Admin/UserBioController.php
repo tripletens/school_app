@@ -1,42 +1,41 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
-
 use App\Helpers\ResponseHelper;
+use App\Models\UserBio;
+use App\Models\User;
 use App\Helpers\DBHelpers;
-use App\Models\Student;
-use App\Models\Subject;
-use App\Validations\UserValidators;
+use App\Validations\StaffValidator;
 use App\Validations\ErrorValidation;
-use App\Validations\StudentValidators;
 
-class UserController extends Controller
+class UserBioController extends Controller
 {
     //
 
-    protected static $user;
-    protected static $uid;
-
-    public function __construct()
+    public function user($role)
     {
-        if (!JWTAuth::getToken()) {
-            //  return 'no token';
+        $user = DBHelpers::with_where_query_filter(
+            User::class,
+            ['bio', 'role'],
+            ['role' => $role]
+        );
 
-            ///  throw new JWTException('Token not provided');
-        }
-
-        // self::$uid = JWTAuth::parseToken()->authenticate()->id;
+        return ResponseHelper::success_response(
+            'All users fetched successfully',
+            $user
+        );
     }
 
-    public function create(UserValidators $val, Request $request)
+    public function create_staff(Request $request)
     {
         if ($request->isMethod('post')) {
-            $validate = $val->validate_rules($request, 'create');
+            $validate = StaffValidator::validate_rules(
+                $request,
+                'register_staff'
+            );
 
             if (!$validate->fails() && $validate->validated()) {
                 $user_data = [
@@ -45,17 +44,19 @@ class UserController extends Controller
                     'surname' => $request->surname,
                     'phone' => $request->phone,
                     'email' => $request->email,
-                    'password' => $request->password,
                     'role' => $request->role,
                 ];
-
                 $user_data = json_encode($user_data);
-
                 $user = [
                     'email' => $request->email,
-                    'password' => bcrypt($request->password),
                     'role' => $request->role,
                     'data' => $user_data,
+                    'full_name' =>
+                        $request->first_name .
+                        ' ' .
+                        $request->surname .
+                        ' ' .
+                        $request->other_name,
                 ];
 
                 $create = DBHelpers::create_query(User::class, $user);
@@ -66,10 +67,9 @@ class UserController extends Controller
                     'surname' => $request->surname,
                     'phone' => $request->phone,
                     'uid' => $create->id,
-                    'role' => $request->role,
                 ];
 
-                $create = DBHelpers::create_query(Staff::class, $staff_data);
+                $create = DBHelpers::create_query(UserBio::class, $staff_data);
 
                 if ($create) {
                     return ResponseHelper::success_response(
@@ -91,7 +91,6 @@ class UserController extends Controller
                     'surname',
                     'role',
                     'phone',
-                    'password',
                     'email',
                 ];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
@@ -109,10 +108,5 @@ class UserController extends Controller
                 404
             );
         }
-    }
-
-    public function dashboard()
-    {
-        return 'heyye';
     }
 }

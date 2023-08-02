@@ -173,7 +173,7 @@ Route::group(
             }
         );
 
-        // School Settings ///////
+        // SCHOOL SETTINGS ///////
         Route::group(
             [
                 'prefix' => 'school-settings',
@@ -195,6 +195,46 @@ Route::group(
                 Route::post('/update', 'SmtpSettingsController@update');
                 Route::get('/index', 'SmtpSettingsController@index');
                 Route::put('/toggle', 'SmtpSettingsController@toggle');
+            }
+        );
+
+        // ROLE MANAGEMENT ///////
+        Route::group(
+            [
+                'prefix' => 'role',
+            ],
+            function ($router) {
+                Route::post('/create', 'RoleController@create');
+                Route::get('/index', 'RoleController@index');
+                Route::put('/role', 'RoleController@update');
+                Route::delete('/delete', 'RoleController@delete');
+                Route::get('/slug/{slug}', 'RoleController@slug');
+            }
+        );
+
+        // STAFF ///////
+        Route::group(
+            [
+                'prefix' => 'staff',
+            ],
+            function ($router) {
+                Route::post('/create', 'UserBioController@create');
+                Route::get('/index', 'UserBioController@index');
+                Route::get('/user/{role}', 'UserBioController@user');
+                Route::post('/staff', 'UserBioController@staff');
+                Route::post('/create-staff', 'UserBioController@create_staff');
+            }
+        );
+
+        // STAFF ///////
+        Route::group(
+            [
+                'prefix' => 'marquee',
+            ],
+            function ($router) {
+                Route::get('/index', 'MarqueeController@index');
+                Route::post('/activate', 'MarqueeController@activate');
+                Route::post('/deactivate', 'MarqueeController@deactivate');
             }
         );
     }
@@ -241,35 +281,6 @@ Route::group(
     }
 );
 
-// Role (Control and Manage Role)
-Route::group(
-    [
-        'middleware' => ['jwt.verify', 'admin.access'],
-        'prefix' => 'admin',
-        'namespace' => 'App\Http\Controllers',
-    ],
-    function ($router) {
-        Route::post('/create', 'RoleController@create');
-        Route::get('/index', 'RoleController@index');
-        Route::put('/role', 'RoleController@update');
-        Route::delete('/delete', 'RoleController@delete');
-    }
-);
-
-// Staff (Control and Manage Staff) ///////
-Route::group(
-    [
-        'middleware' => ['jwt.verify', 'admin.access'],
-        'prefix' => 'staff',
-        'namespace' => 'App\Http\Controllers',
-    ],
-    function ($router) {
-        Route::post('/create', 'StaffController@create');
-        Route::get('/staffs', 'StaffController@staffs');
-        Route::post('/staff', 'StaffController@staff');
-    }
-);
-
 // routes action for users Auth ////////
 Route::group(
     [
@@ -297,7 +308,6 @@ Route::group(
         Route::delete('/delete', 'SubjectController@destroy');
         Route::get('/all', 'SubjectController@index');
         Route::get('/fetch-one-subject', 'SubjectController@fetch_one_subject');
-
     }
 );
 
@@ -318,5 +328,3 @@ Route::group(
         Route::get('/dashboard', 'UserController@dashboard');
     }
 );
-
-

@@ -23,7 +23,6 @@ class StaffValidator
                 'other_name' => 'required',
                 'surname' => 'required',
                 'email' => 'required|unique:users',
-                'password' => 'required',
                 'phone' => 'required',
                 'role' => 'required',
             ],

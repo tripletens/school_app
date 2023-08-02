@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
 use App\Models\Role;
@@ -13,6 +14,15 @@ use App\Validations\ErrorValidation;
 class RoleController extends Controller
 {
     //
+
+    public function slug($slug)
+    {
+        $role = DBHelpers::query_filter_first(Role::class, ['slug' => $slug]);
+        return ResponseHelper::success_response(
+            'Role by slug fetched successfully',
+            $role
+        );
+    }
 
     public function delete(Request $request)
     {

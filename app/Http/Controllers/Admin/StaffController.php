@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Helpers\ResponseHelper;
 use App\Models\Staff;
 use App\Models\User;
@@ -173,7 +173,7 @@ class StaffController extends Controller
         }
     }
 
-    public function staffs()
+    public function index()
     {
         try {
             $staffs = Staff::with(['user', 'role'])->get();
@@ -206,7 +206,6 @@ class StaffController extends Controller
                     'surname' => $request->surname,
                     'phone' => $request->phone,
                     'email' => $request->email,
-                    'password' => $request->password,
                     'role' => $request->role,
                 ];
 
@@ -214,7 +213,6 @@ class StaffController extends Controller
 
                 $user = [
                     'email' => $request->email,
-                    'password' => bcrypt($request->password),
                     'role' => $request->role,
                     'data' => $user_data,
                 ];
