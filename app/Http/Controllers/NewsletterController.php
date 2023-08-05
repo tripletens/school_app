@@ -106,6 +106,64 @@ class NewsletterController extends Controller
         //
     }
 
+    public function fetch_one_newsletter(Request $request)
+    {
+        //
+
+        if ($request->isMethod('get')) {
+            $validate = NewsletterValidators::validate_rules(
+                $request,
+                'fetch_newsletter_by_id'
+            );
+
+            if (!$validate->fails() && $validate->validated()) {
+
+                $id = $request->id;
+
+                $data = [
+                    "id" => $id,
+                ];
+
+
+                if (!DBHelpers::exists(Subject::class, ['id' => $id])) {
+                    return ResponseHelper::error_response(
+                        'Update failed, Newsletter not found',
+                        '',
+                        401
+                    );
+                }
+
+                $newsletter = DBHelpers::query_filter_first(Newsletter::class,[
+                    "id" => $id,
+                ]);
+
+                return ResponseHelper::success_response(
+                    'Newsletter fetched successful',
+                    $newsletter
+                );
+
+            } else {
+                $errors = json_decode($validate->errors());
+                $props = [
+                    "id",
+                ];
+                $error_res = ErrorValidation::arrange_error($errors, $props);
+
+                return ResponseHelper::error_response(
+                    'validation error',
+                    $error_res,
+                    401
+                );
+            }
+        } else {
+            return ResponseHelper::error_response(
+                'HTTP Request not allowed',
+                '',
+                404
+            );
+        }
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
