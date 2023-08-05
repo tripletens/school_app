@@ -197,6 +197,7 @@ class NewsletterController extends Controller
                 $data = [
                     'title' => $request->title,
                     'description' => $request->description,
+                    'image_url' => $request->image_url ? $request->image_url : null,
                 ];
 
                 if (!DBHelpers::exists(Newsletter::class, ['id' => $id])) {
