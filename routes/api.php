@@ -301,6 +301,20 @@ Route::group(
     }
 );
 
+Route::group(
+    [
+        'prefix' => 'newsletter',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::post('/add', 'NewsletterController@store')->middleware(['jwt.verify', 'admin.access']);
+        Route::put('/update', 'NewsletterController@update')->middleware(['jwt.verify', 'admin.access']);
+        Route::delete('/delete', 'NewsletterController@destroy')->middleware(['jwt.verify', 'admin.access']);
+        Route::get('/all', 'NewsletterController@index')->middleware(['jwt.verify']);
+        Route::get('/fetch-one-subject', 'NewsletterController@fetch_one_newsletter')->middleware(['jwt.verify']);
+    }
+);
+
 // ************************************
 
 // USERS SECTION
