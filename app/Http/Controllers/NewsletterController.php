@@ -251,8 +251,47 @@ class NewsletterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        // delete newsletter by id
+        if ($request->isMethod('delete')) {
+            $validate = NewsletterValidators::validate_rules($request, 'delete_newsletter');
+
+            if (!$validate->fails() && $validate->validated()) {
+                $id = $request->id;
+
+                $create = DBHelpers::delete_query(Newsletter::class, $id);
+
+                if ($create) {
+                    return ResponseHelper::success_response(
+                        'Newsletter deletion was successful',
+                        null,
+                        200
+                    );
+                } else {
+                    return ResponseHelper::error_response(
+                        'Delete failed, Database issues',
+                        '',
+                        401
+                    );
+                }
+            } else {
+                $errors = json_decode($validate->errors());
+                $props = ['id'];
+                $error_res = ErrorValidation::arrange_error($errors, $props);
+
+                return ResponseHelper::error_response(
+                    'validation error',
+                    $error_res,
+                    401
+                );
+            }
+        } else {
+            return ResponseHelper::error_response(
+                'HTTP Request not allowed',
+                '',
+                404
+            );
+        }
     }
 }
