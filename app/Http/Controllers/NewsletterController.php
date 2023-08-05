@@ -184,7 +184,65 @@ class NewsletterController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // edit newsletter
+        if ($request->isMethod('put')) {
+            $validate = NewsletterValidators::validate_rules(
+                $request,
+                'update_newsletter'
+            );
+
+            if (!$validate->fails() && $validate->validated()) {
+                $id = $request->id;
+
+                $data = [
+                    'title' => $request->title,
+                    'description' => $request->description,
+                ];
+
+                if (!DBHelpers::exists(Newsletter::class, ['id' => $id])) {
+                    return ResponseHelper::error_response(
+                        'Update failed, Newsletter not found',
+                        '',
+                        401
+                    );
+                }
+
+                $update = DBHelpers::update_query(
+                    Newsletter::class,
+                    $data,
+                    $id
+                );
+
+                if (!$update) {
+                    return ResponseHelper::error_response(
+                        'Update failed, Database insertion issues',
+                        '',
+                        401
+                    );
+                }
+
+                return ResponseHelper::success_response(
+                    'Update was successful',
+                    null
+                );
+            } else {
+                $errors = json_decode($validate->errors());
+                $props = ['title', 'description'];
+                $error_res = ErrorValidation::arrange_error($errors, $props);
+
+                return ResponseHelper::error_response(
+                    'validation error',
+                    $error_res,
+                    401
+                );
+            }
+        } else {
+            return ResponseHelper::error_response(
+                'HTTP Request not allowed',
+                '',
+                404
+            );
+        }
     }
 
     /**
