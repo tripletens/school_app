@@ -195,6 +195,25 @@ Route::group(
                 Route::post('/update', 'SmtpSettingsController@update');
                 Route::get('/index', 'SmtpSettingsController@index');
                 Route::put('/toggle', 'SmtpSettingsController@toggle');
+
+                Route::post(
+                    '/test-mail',
+                    'SmtpSettingsController@send_mail_test'
+                );
+            }
+        );
+
+        // Cloudinary Settings ///////
+        Route::group(
+            [
+                'prefix' => 'cloudinary-settings',
+            ],
+            function ($router) {
+                Route::post('/create', 'CloudinarySettingsController@create');
+                Route::post('/update', 'CloudinarySettingsController@update');
+                Route::get('/index', 'CloudinarySettingsController@index');
+                Route::post('/toggle', 'CloudinarySettingsController@toggle');
+                Route::post('/testing', 'CloudinarySettingsController@testing');
             }
         );
 
