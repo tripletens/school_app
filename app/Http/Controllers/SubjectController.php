@@ -55,8 +55,9 @@ class SubjectController extends Controller
 
             if (!$validate->fails() && $validate->validated()) {
                 $data = [
-                    'title' => $request->title,
-                    'description' => $request->description,
+                    'name' => $request->name,
+                    'subject_code' => $request->subject_code,
+                    'credit_unit' => $request->credit_unit
                 ];
 
                 $create = DBHelpers::create_query(Subject::class, $data);
@@ -75,7 +76,7 @@ class SubjectController extends Controller
                 }
             } else {
                 $errors = json_decode($validate->errors());
-                $props = ['title', 'description'];
+                $props = ['name', 'subject_code','credit_unit'];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
 
                 return ResponseHelper::error_response(
@@ -187,8 +188,9 @@ class SubjectController extends Controller
                 $id = $request->id;
 
                 $data = [
-                    'title' => $request->title,
-                    'description' => $request->description,
+                    'name' => $request->name,
+                    'subject_code' => $request->subject_code,
+                    'credit_unit' => $request->credit_unit
                 ];
 
                 if (!DBHelpers::exists(Subject::class, ['id' => $id])) {
@@ -219,7 +221,7 @@ class SubjectController extends Controller
                 );
             } else {
                 $errors = json_decode($validate->errors());
-                $props = ['title', 'description'];
+                $props = ['name', 'subject'];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
 
                 return ResponseHelper::error_response(
