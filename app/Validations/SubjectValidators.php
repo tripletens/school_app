@@ -19,13 +19,15 @@ class SubjectValidators
     {
         self::$validation_rules = [
             'register_subject' => [
-                'title' => 'required|unique:subject',
-                'description' => 'required',
+                'name' => 'required|unique:subject',
+                'subject_code' => 'required',
+                'credit_unit' => 'required',
             ],
 
             'update_subject' => [
-                'title' => 'required',
-                'description' => 'required',
+                'name' => 'required',
+                'subject_code' => 'required',
+                'credit_unit' => 'required',
                 'id' => 'required',
             ],
 
