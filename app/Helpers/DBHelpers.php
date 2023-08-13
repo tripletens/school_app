@@ -231,6 +231,21 @@ class DBHelpers
         }
     }
 
+    /////// Delete query data for multiple records
+    public static function delete_query_multi($dataModel, $filter)
+    {
+        try {
+            return $dataModel::where($filter)->delete();
+        } catch (Exception $e) {
+            return ResponseHelper::error_response(
+                'Server Error',
+                $e->getMessage(),
+                401,
+                $e->getLine()
+            );
+        }
+    }
+
     /////// update query v1 //////
     public static function update_query_v2($dataModel, $data, $id = 0)
     {

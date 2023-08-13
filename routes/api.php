@@ -301,6 +301,22 @@ Route::group(
     }
 );
 
+
+/////// Subject Group CRUD
+Route::group(
+    [
+        'middleware' => ['jwt.verify', 'admin.access'],
+        'prefix' => 'subject-group',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::post('/add', 'SubjectGroupController@store');
+        Route::delete('/delete', 'SubjectGroupController@destroy');
+        Route::get('/all', 'SubjectGroupController@index');
+        Route::get('/fetch-one-subject', 'SubjectGroupController@fetch_one_subject');
+
+    }
+);
 Route::group(
     [
         'prefix' => 'newsletter',
