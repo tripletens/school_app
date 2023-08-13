@@ -312,11 +312,10 @@ Route::group(
     function ($router) {
         Route::post('/add', 'SubjectGroupController@store');
         Route::delete('/delete', 'SubjectGroupController@destroy');
-        Route::get('/all', 'SubjectGroupController@index');
-        Route::get('/fetch-one-subject', 'SubjectGroupController@fetch_one_subject');
-
     }
 );
+
+////// Newsletter CRUD
 Route::group(
     [
         'prefix' => 'newsletter',

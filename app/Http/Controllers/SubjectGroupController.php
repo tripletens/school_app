@@ -52,7 +52,7 @@ class SubjectGroupController extends Controller
                     'child_subject_id' => $request->child_subject_id
                 ];
 
-                $create = DBHelpers::create_query(Subject::class, $data);
+                $create = DBHelpers::create_query(SubjectGroup::class, $data);
 
                 if ($create) {
                     return ResponseHelper::success_response(
@@ -147,9 +147,9 @@ class SubjectGroupController extends Controller
 
                 // here it exists so we delete them
 
-                $create = DBHelpers::delete_query_multi(Subject::class, ['parent_subject_id' => $parent_subject_id, 'child_subject_id' => $child_subject_id]);
+                $delete = DBHelpers::delete_query_multi(SubjectGroup::class, ['parent_subject_id' => $parent_subject_id, 'child_subject_id' => $child_subject_id]);
 
-                if ($create) {
+                if ($delete) {
                     return ResponseHelper::success_response(
                         'Delete was successful',
                         null,

@@ -31,8 +31,7 @@ class SubjectGroupValidators
 
             'delete_subject' => [
                 'parent_subject_id' => 'required',
-                'child_subject_id' => 'required',
-                'id' => 'required',
+                'child_subject_id' => 'required'
             ],
 
             "fetch_subject_by_id" => [
