@@ -23,13 +23,13 @@ class SubjectGroupValidators
                 'child_subject_id' => 'required',
             ],
 
-            'update_subject' => [
+            'update_subject_group' => [
                 'parent_subject_id' => 'required',
                 'child_subject_id' => 'required',
                 'id' => 'required',
             ],
 
-            'delete_subject' => [
+            'delete_subject_group' => [
                 'parent_subject_id' => 'required',
                 'child_subject_id' => 'required'
             ],
