@@ -15,10 +15,28 @@ use App\Helpers\ResponseHelper;
 use App\Models\StmpSettings;
 use SendinBlue;
 use GuzzleHttp;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Services\SmtpService;
 
 class SmtpSettingsController extends Controller
 {
     //
+
+    public function send_smtp_mail_test()
+    {
+        //Set mail configuration
+        SmtpService::setMailConfig();
+
+        $data = ['name' => 'Virat Gandhi'];
+
+        return Mail::send(['text' => 'mail'], $data, function ($message) {
+            $message
+                ->to('achawayne@gmail.com', 'Lorem Ipsum')
+                ->subject('Laravel Basic Testing Mail');
+            $message->from('xyz@gmail.com', $data['name']);
+        });
+    }
 
     public function send_mail_test()
     {

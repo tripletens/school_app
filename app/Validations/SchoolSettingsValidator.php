@@ -28,6 +28,9 @@ class SchoolSettingsValidator
             'active' => [
                 'id' => 'required',
             ],
+            'personification' => [
+                'id' => 'required',
+            ],
         ];
 
         return Func::run_validation($request, self::$validation_rules[$arg]);

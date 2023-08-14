@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Http;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
+use App\Models\CloudinarySettings;
+use App\Helpers\DBHelpers;
+use App\Helpers\ResponseHelper;
 
 class CloudinaryService
 {
@@ -14,13 +17,13 @@ class CloudinaryService
     public $secret_key;
     public $url;
 
-    public function __construct($name, $api_key, $secret_key, $url)
+    public function __construct()
     {
-        $this->name = $name;
-        $this->api_key = $api_key;
-        $this->secret_key = $secret_key;
-        $this->url = $url;
-
+        $data = DBHelpers::first_data(CloudinarySettings::class);
+        $this->name = $data->name;
+        $this->api_key = $data->api_key;
+        $this->secret_key = $data->secret_key;
+        $this->url = $data->cloudinary_url;
         Configuration::instance($this->url);
     }
 
@@ -37,7 +40,7 @@ class CloudinaryService
         ]);
 
         if ($result && $result !== null) {
-            return $result;
+            return $result['secure_url'];
         } else {
             return false;
         }

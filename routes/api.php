@@ -177,11 +177,16 @@ Route::group(
         Route::group(
             [
                 'prefix' => 'school-settings',
+                'middleware' => 'cors',
             ],
             function ($router) {
                 Route::post('/create', 'SchoolSettingsController@create');
                 Route::post('/update', 'SchoolSettingsController@update');
                 Route::get('/index', 'SchoolSettingsController@index');
+                Route::post(
+                    '/personification',
+                    'SchoolSettingsController@personification'
+                );
             }
         );
 
@@ -199,6 +204,11 @@ Route::group(
                 Route::post(
                     '/test-mail',
                     'SmtpSettingsController@send_mail_test'
+                );
+
+                Route::post(
+                    '/send-smtp-test-mail',
+                    'SmtpSettingsController@send_smtp_mail_test'
                 );
             }
         );

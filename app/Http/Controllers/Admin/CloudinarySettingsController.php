@@ -22,48 +22,48 @@ class CloudinarySettingsController extends Controller
 
     public function testing(Request $request)
     {
-        $data = DBHelpers::first_data(CloudinarySettings::class);
+        // $data = DBHelpers::first_data(CloudinarySettings::class);
 
-        if ($data) {
-            $cloud = new CloudinaryService(
-                $data->name,
-                $data->api_key,
-                $data->secret_key,
-                $data->cloudinary_url
-            );
+        // if ($data) {
+        //     $cloud = new CloudinaryService(
+        //         $data->name,
+        //         $data->api_key,
+        //         $data->secret_key,
+        //         $data->cloudinary_url
+        //     );
 
-            $res = $cloud->image_upload('test', $request->file('image'));
-            return $res['secure_url'];
-        } else {
-            return ResponseHelper::error_response(
-                'Upload failed,  Cloudinary Settings class not found',
-                '',
-                401
-            );
-        }
+        //     $res = $cloud->image_upload('test', $request->file('image'));
+        //     return $res['secure_url'];
+        // } else {
+        //     return ResponseHelper::error_response(
+        //         'Upload failed,  Cloudinary Settings class not found',
+        //         '',
+        //         401
+        //     );
+        // }
     }
 
-    public function upload_image(Request $request)
+    public static function upload_image($image)
     {
-        $data = DBHelpers::first_data(CloudinarySettings::class);
+        // $data = DBHelpers::first_data(CloudinarySettings::class);
 
-        if ($data) {
-            $cloud = new CloudinaryService(
-                $data->name,
-                $data->api_key,
-                $data->secret_key,
-                $data->cloudinary_url
-            );
+        // if ($data) {
+        //     $cloud = new CloudinaryService(
+        //         $data->name,
+        //         $data->api_key,
+        //         $data->secret_key,
+        //         $data->cloudinary_url
+        //     );
 
-            $res = $cloud->image_upload('images', $request->file('image'));
-            return $res['secure_url'];
-        } else {
-            return ResponseHelper::error_response(
-                'Upload failed,  Cloudinary Settings class not found',
-                '',
-                401
-            );
-        }
+        //     $res = $cloud->image_upload('images', $image->file('image'));
+        //     return $res['secure_url'];
+        // } else {
+        //     return ResponseHelper::error_response(
+        //         'Upload failed,  Cloudinary Settings class not found',
+        //         '',
+        //         401
+        //     );
+        // }
     }
 
     public function toggle(Request $request, CloudinarySettingsValidator $val)
