@@ -11,27 +11,26 @@
 namespace App\Validations;
 use App\Helpers\Func;
 
-class SubjectGroupValidators
+class StaffSubjectAssignValidators
 {
     protected static $validation_rules = [];
 
     public static function validate_rules($request, string $arg)
     {
         self::$validation_rules = [
-            'register_subject_group' => [
-                'parent_subject_id' => 'required',
-                'child_subject_id' => 'required',
+            'register_staff_subject_assign' => [
+                'subject_id' => 'required',
+                'staff_id' => 'required',
             ],
 
-            'update_subject_group' => [
-                'parent_subject_id' => 'required',
-                'child_subject_id' => 'required',
-                'id' => 'required',
+            'update_subject_assign' => [
+                'subject_id' => 'required',
+                'staff_id' => 'required',
             ],
 
-            'delete_subject_group' => [
-                'parent_subject_id' => 'required',
-                'child_subject_id' => 'required'
+            'delete_subject_assign' => [
+                'subject_id' => 'required',
+                'staff_id' => 'required',
             ],
 
             "fetch_subject_by_id" => [
