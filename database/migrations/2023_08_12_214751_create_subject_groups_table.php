@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subject', function (Blueprint $table) {
+        Schema::create('subject_groups', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('subject_code')->nullable();
-            $table->integer('credit_unit')->nullable();
-            $table->longText('description')->nullable();
+            $table->integer('parent_subject_id')->nullable();
+            $table->integer('child_subject_id')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subject');
+        Schema::dropIfExists('subject_groups');
     }
 };

@@ -11,31 +11,29 @@
 namespace App\Validations;
 use App\Helpers\Func;
 
-class SubjectValidators
+class NewsletterValidators
 {
     protected static $validation_rules = [];
 
     public static function validate_rules($request, string $arg)
     {
         self::$validation_rules = [
-            'register_subject' => [
-                'name' => 'required|unique:subject',
-                'subject_code' => 'required',
-                'credit_unit' => 'required',
+            'register_newsletter' => [
+                'title' => 'required|unique:newsletter',
+                'description' => 'required',
             ],
 
-            'update_subject' => [
-                'name' => 'required',
-                'subject_code' => 'required',
-                'credit_unit' => 'required',
+            'update_newsletter' => [
+                'title' => 'required',
+                'description' => 'required',
                 'id' => 'required',
             ],
 
-            'delete_subject' => [
+            'delete_newsletter' => [
                 'id' => 'required',
             ],
 
-            "fetch_subject_by_id" => [
+            "fetch_newsletter_by_id" => [
                 'id' => 'required',
             ]
         ];
