@@ -266,6 +266,23 @@ Route::group(
                 Route::post('/deactivate', 'MarqueeController@deactivate');
             }
         );
+
+        /////// Subject CRUD
+        Route::group(
+            [
+                'prefix' => 'subject',
+            ],
+            function ($router) {
+                Route::post('/add', 'SubjectController@store');
+                Route::post('/update', 'SubjectController@update');
+                Route::post('/delete', 'SubjectController@destroy');
+                Route::get('/all', 'SubjectController@index');
+                Route::get(
+                    '/fetch-one-subject',
+                    'SubjectController@fetch_one_subject'
+                );
+            }
+        );
     }
 );
 
@@ -340,7 +357,6 @@ Route::group(
     }
 );
 
-
 /////// Subject Group CRUD
 Route::group(
     [
@@ -361,11 +377,25 @@ Route::group(
         'namespace' => 'App\Http\Controllers',
     ],
     function ($router) {
-        Route::post('/add', 'NewsletterController@store')->middleware(['jwt.verify', 'admin.access']);
-        Route::put('/update', 'NewsletterController@update')->middleware(['jwt.verify', 'admin.access']);
-        Route::delete('/delete', 'NewsletterController@destroy')->middleware(['jwt.verify', 'admin.access']);
-        Route::get('/all', 'NewsletterController@index')->middleware(['jwt.verify']);
-        Route::get('/fetch-one-subject', 'NewsletterController@fetch_one_newsletter')->middleware(['jwt.verify']);
+        Route::post('/add', 'NewsletterController@store')->middleware([
+            'jwt.verify',
+            'admin.access',
+        ]);
+        Route::put('/update', 'NewsletterController@update')->middleware([
+            'jwt.verify',
+            'admin.access',
+        ]);
+        Route::delete('/delete', 'NewsletterController@destroy')->middleware([
+            'jwt.verify',
+            'admin.access',
+        ]);
+        Route::get('/all', 'NewsletterController@index')->middleware([
+            'jwt.verify',
+        ]);
+        Route::get(
+            '/fetch-one-subject',
+            'NewsletterController@fetch_one_newsletter'
+        )->middleware(['jwt.verify']);
     }
 );
 

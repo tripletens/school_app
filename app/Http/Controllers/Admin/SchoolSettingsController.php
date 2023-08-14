@@ -31,9 +31,17 @@ class SchoolSettingsController extends Controller
     }
 
     public function personification(
-        FormDataValidation $request,
+        Request $request,
         SchoolSettingsValidator $val
     ) {
+        $id = $request->input('id');
+
+        return ResponseHelper::error_response(
+            'Update failed, School settings class not found',
+            '',
+            $id
+        );
+
         // $test = file_get_contents('php://input');
         // echo $test;
 
