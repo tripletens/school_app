@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DBHelpers;
 use App\Helpers\ResponseHelper;
-use App\Models\SubjectGroup;
-use Illuminate\Http\Request;
-use App\Validations\SubjectGroupValidators;
+use App\Models\SubjectClassAssign;
 use App\Validations\ErrorValidation;
+use App\Validations\SubjectClassAssignValidators;
+use Illuminate\Http\Request;
 
-class SubjectGroupController extends Controller
+class SubjectClassAssignController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +18,7 @@ class SubjectGroupController extends Controller
      */
     public function index()
     {
-        // fetch all the groups we have
-
+        //
     }
 
     /**
@@ -29,7 +28,7 @@ class SubjectGroupController extends Controller
      */
     public function create()
     {
-        // add the
+        //
     }
 
     /**
@@ -41,34 +40,34 @@ class SubjectGroupController extends Controller
     public function store(Request $request)
     {
         if ($request->isMethod('post')) {
-            $validate = SubjectGroupValidators::validate_rules(
+            $validate = SubjectClassAssignValidators::validate_rules(
                 $request,
-                'register_subject_group'
+                'register_subject_class_assign'
             );
 
             if (!$validate->fails() && $validate->validated()) {
                 $data = [
-                    'parent_subject_id' => $request->parent_subject_id,
-                    'child_subject_id' => $request->child_subject_id
+                    'subject_id' => $request->subject_id,
+                    'class_id' => $request->class_id
                 ];
 
                 $create = DBHelpers::create_query(SubjectGroup::class, $data);
 
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Subject added to group successfully',
+                        'Subject added to class successfully',
                         null
                     );
                 } else {
                     return ResponseHelper::error_response(
-                        'Subject could not be added to group, Database insertion issues',
+                        'Subject could not be added to class, Database insertion issues',
                         '',
                         401
                     );
                 }
             } else {
                 $errors = json_decode($validate->errors());
-                $props = ['parent_subject_id', 'child_subject_id'];
+                $props = ['subject_id', 'class_id'];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
 
                 return ResponseHelper::error_response(
@@ -85,6 +84,7 @@ class SubjectGroupController extends Controller
             );
         }
     }
+
     /**
      * Display the specified resource.
      *
@@ -127,19 +127,19 @@ class SubjectGroupController extends Controller
      */
     public function destroy(Request $request)
     {
-        // delete a subject from a subject group (parent subject)
+        // delete a subject from a class
         if ($request->isMethod('delete')) {
-            $validate = SubjectGroupValidators::validate_rules($request, 'delete_subject_group');
+            $validate = SubjectClassAssignValidators::validate_rules($request, 'delete_subject_group');
 
             if (!$validate->fails() && $validate->validated()) {
-                $parent_subject_id = $request->parent_subject_id;
-                $child_subject_id = $request->child_subject_id;
+                $subject_id = $request->subject_id;
+                $class_id = $request->class_id;
 
-                // find the group where parent_subject_id and child_subject_id are available and then delete
+                // find the class where subject_id and class_id are available and then delete
 
-                if (!DBHelpers::exists(SubjectGroup::class, ['parent_subject_id' => $parent_subject_id, 'child_subject_id' => $child_subject_id])) {
+                if (!DBHelpers::exists(SubjectGroup::class, ['subject_id' => $subject_id, 'class_id' => $class_id])) {
                     return ResponseHelper::error_response(
-                        'Update failed, Subject not in group',
+                        'Update failed, Subject not in class',
                         '',
                         401
                     );
@@ -147,7 +147,7 @@ class SubjectGroupController extends Controller
 
                 // here it exists so we delete them
 
-                $delete = DBHelpers::delete_query_multi(SubjectGroup::class, ['parent_subject_id' => $parent_subject_id, 'child_subject_id' => $child_subject_id]);
+                $delete = DBHelpers::delete_query_multi(SubjectClassAssign::class, ['subject_id' => $subject_id, 'class_id' => $class_id]);
 
                 if ($delete) {
                     return ResponseHelper::success_response(

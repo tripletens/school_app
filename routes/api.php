@@ -370,6 +370,33 @@ Route::group(
     }
 );
 
+/////// Subject to class assignment CRUD
+Route::group(
+    [
+        'middleware' => ['jwt.verify', 'admin.access'],
+        'prefix' => 'subject-class-assign',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::post('/add', 'SubjectClassAssignController@store');
+        Route::delete('/delete', 'SubjectClassAssignController@destroy');
+    }
+);
+
+/////// Subject to staff assignment CRUD
+Route::group(
+    [
+        'middleware' => ['jwt.verify', 'admin.access'],
+        'prefix' => 'subject-staff-assign',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::post('/add', 'StaffSubjectAssignController@store');
+        Route::delete('/delete', 'StaffSubjectAssignController@destroy');
+    }
+);
+
+
 ////// Newsletter CRUD
 Route::group(
     [
