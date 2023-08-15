@@ -13,6 +13,7 @@ ENV REAL_IP_HEADER 1
 ENV APP_ENV production
 ENV APP_DEBUG true
 ENV LOG_CHANNEL stderr
+ENV MYSQL_ATTR_SSL_CA /isrgrootx1.pem
 
 
 # Allow composer to run as root
