@@ -163,7 +163,6 @@ Route::group(
             function ($router) {
                 Route::post('/create', 'ServiceProviderController@create');
                 Route::post('/update', 'ServiceProviderController@update');
-
                 Route::post('/activate', 'ServiceProviderController@activate');
                 Route::post(
                     '/deactivate',
@@ -395,7 +394,6 @@ Route::group(
         Route::delete('/delete', 'StaffSubjectAssignController@destroy');
     }
 );
-
 
 ////// Newsletter CRUD
 Route::group(

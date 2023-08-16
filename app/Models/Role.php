@@ -11,7 +11,7 @@ class Role extends Model
     use HasFactory;
 
     protected $table = 'role';
-    protected $fillable = ['id', 'name', 'slug'];
+    protected $fillable = ['id', 'name', 'slug', 'icon', 'type', 'category'];
 
     // public function user(): BelongsTo
     // {
