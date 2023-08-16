@@ -12,19 +12,17 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('sms_services', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->longText('data')->nullable();
-            $table->text('full_name')->nullable();
-            $table->integer('role');
-            $table->type('string')->nullable();
+            $table->text('name')->nullable();
+            $table->text('provider_name');
+            $table->text('username')->nullable();
+            $table->text('sender_id')->nullable();
+            $table->text('token_key')->nullable();
+            $table->text('api_key')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->integer('status')->default(true);
+            $table->boolean('status')->default(true);
             $table->foreignId('created_by')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -36,6 +34,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        // Schema::dropIfExists('users');
+        Schema::dropIfExists('sms_services');
     }
 };
