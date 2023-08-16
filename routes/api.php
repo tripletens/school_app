@@ -29,7 +29,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // SCHOOL CLASSES
 Route::group(
     [
-        'middleware' => ['jwt.verify', 'admin.access'],
+        // 'middleware' => ['jwt.verify', 'admin.access'],
+        'middleware' => ['jwt.verify'],
         'prefix' => 'admin',
         'namespace' => 'App\Http\Controllers\Admin',
     ],
@@ -41,7 +42,8 @@ Route::group(
 /////// SCHOOL TERM SESSION CRUD
 Route::group(
     [
-        'middleware' => ['jwt.verify', 'admin.access'],
+        // 'middleware' => ['jwt.verify', 'admin.access'],
+        'middleware' => ['jwt.verify'],
         'prefix' => 'school-term',
         'namespace' => 'App\Http\Controllers',
     ],
@@ -56,7 +58,8 @@ Route::group(
 // ADMIN SECTIONS ///////
 Route::group(
     [
-        'middleware' => ['jwt.verify', 'admin.access'],
+        // 'middleware' => ['jwt.verify', 'admin.access'],
+        'middleware' => ['jwt.verify'],
         'prefix' => 'admin',
         'namespace' => 'App\Http\Controllers\Admin',
     ],
@@ -395,7 +398,6 @@ Route::group(
         Route::delete('/delete', 'StaffSubjectAssignController@destroy');
     }
 );
-
 
 ////// Newsletter CRUD
 Route::group(
