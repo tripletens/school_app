@@ -20,8 +20,8 @@ class RoleValidators
         self::$validation_rules = [
             'register_role' => [
                 'name' => 'required|unique:role',
+                'type' => 'required',
             ],
-
             'update_role' => [
                 'name' => 'required|unique:role',
                 'id' => 'required',

@@ -166,7 +166,6 @@ Route::group(
             function ($router) {
                 Route::post('/create', 'ServiceProviderController@create');
                 Route::post('/update', 'ServiceProviderController@update');
-
                 Route::post('/activate', 'ServiceProviderController@activate');
                 Route::post(
                     '/deactivate',
@@ -286,6 +285,17 @@ Route::group(
                 );
             }
         );
+    }
+);
+
+/////// User CRUD
+Route::group(
+    [
+        'prefix' => 'admin/user',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::post('/upload-user', 'UserController@upload_user');
     }
 );
 

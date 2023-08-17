@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Helpers\DBHelpers;
 use App\Validations\RoleValidators;
 use App\Validations\ErrorValidation;
+use App\Services\CloudinaryService;
 
 class RoleController extends Controller
 {
@@ -138,13 +139,25 @@ class RoleController extends Controller
                 'register_role'
             );
 
+            $cloud = new CloudinaryService();
+
             if (!$validate->fails() && $validate->validated()) {
                 $name = $request->name;
                 $slug = str_replace(' ', '_', $name);
 
+                $logo_url = '';
+                if ($request->hasFile('icon')) {
+                    $logo_url = $cloud->image_upload(
+                        'images',
+                        $request->file('icon')
+                    );
+                }
+
                 $data = [
                     'name' => $name,
                     'slug' => $slug,
+                    'icon' => $logo_url,
+                    'type' => $request->type,
                 ];
 
                 $create = DBHelpers::create_query(Role::class, $data);

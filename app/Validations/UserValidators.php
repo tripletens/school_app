@@ -65,6 +65,11 @@ class UserValidators
                 'admission_number' => 'required',
                 'school_class' => 'required',
             ],
+            'upload' => [
+                'type' => 'required',
+                'excel' => 'required',
+                'role' => 'required',
+            ],
         ];
 
         return Func::run_validation($request, self::$validation_rules[$arg]);
