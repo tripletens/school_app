@@ -14,6 +14,7 @@ class ExcelSpreadSheet
     public $row_limit;
     public $column_limit;
     public $row_range;
+    public $startcount;
 
     public function __construct($data)
     {
@@ -22,9 +23,9 @@ class ExcelSpreadSheet
         $this->row_limit = $this->sheet->getHighestDataRow();
         $this->column_limit = $this->sheet->getHighestDataColumn();
         $this->row_range = range(2, $this->row_limit);
+        $this->startcount = 2;
 
         // $column_range = range('F', $column_limit);
-        // $startcount = 2;
         // $data = [];
     }
 }

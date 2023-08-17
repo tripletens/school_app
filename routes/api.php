@@ -285,6 +285,17 @@ Route::group(
     }
 );
 
+/////// User CRUD
+Route::group(
+    [
+        'prefix' => 'admin/user',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::post('/upload-user', 'UserController@upload_user');
+    }
+);
+
 // School Settings ///////
 Route::group(
     [
