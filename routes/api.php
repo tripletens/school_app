@@ -266,6 +266,15 @@ Route::group(
                 Route::get('/index', 'MarqueeController@index');
                 Route::post('/activate', 'MarqueeController@activate');
                 Route::post('/deactivate', 'MarqueeController@deactivate');
+
+                Route::post(
+                    '/deactivate-slug',
+                    'MarqueeController@deactivate_slug'
+                );
+                Route::post(
+                    '/activate-slug',
+                    'MarqueeController@activate_slug'
+                );
             }
         );
 
