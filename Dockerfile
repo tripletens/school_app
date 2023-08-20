@@ -10,9 +10,9 @@ ENV RUN_SCRIPTS 1
 ENV REAL_IP_HEADER 1
 
 # Laravel config
-ENV APP_ENV production
-ENV APP_DEBUG true
-ENV LOG_CHANNEL stderr
+# ENV APP_ENV production
+# ENV APP_DEBUG true
+# ENV LOG_CHANNEL stderr
 # ENV MYSQL_ATTR_SSL_CA /isrgrootx1.pem
 
 
