@@ -32,6 +32,12 @@ class MarqueeValidator
             'deactivate' => [
                 'id' => 'required',
             ],
+            'deactivate_slug' => [
+                'slug' => 'required',
+            ],
+            'activate_slug' => [
+                'slug' => 'required',
+            ],
         ];
 
         return Func::run_validation($request, self::$validation_rules[$arg]);
