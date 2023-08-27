@@ -376,6 +376,8 @@ Route::group(
         Route::delete('/delete', 'SubjectController@destroy');
         Route::get('/all', 'SubjectController@index');
         Route::get('/fetch-one-subject', 'SubjectController@fetch_one_subject');
+        Route::post('/activate-subject', 'SubjectController@activate_subject');
+        Route::post('/deactivate-subject', 'SubjectController@deactivate_subject');
     }
 );
 
