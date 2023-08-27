@@ -11,7 +11,7 @@
 namespace App\Validations;
 use App\Helpers\Func;
 
-class SchoolSettingsValidator
+class CloudinarySettingsValidator
 {
     protected static $validation_rules = [];
 
@@ -19,16 +19,19 @@ class SchoolSettingsValidator
     {
         self::$validation_rules = [
             'create' => [
-                'running_year' => 'required',
+                'name' => 'required',
+                'api_key' => 'required',
+                'secret_key' => 'required',
+                'cloudinary_url' => 'required',
             ],
             'update' => [
                 'id' => 'required',
-                'running_year' => 'required',
+                'name' => 'required',
+                'api_key' => 'required',
+                'secret_key' => 'required',
+                'cloudinary_url' => 'required',
             ],
-            'active' => [
-                'id' => 'required',
-            ],
-            'personification' => [
+            'toggle' => [
                 'id' => 'required',
             ],
         ];

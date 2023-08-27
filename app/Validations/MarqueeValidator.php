@@ -11,7 +11,7 @@
 namespace App\Validations;
 use App\Helpers\Func;
 
-class SchoolSettingsValidator
+class MarqueeValidator
 {
     protected static $validation_rules = [];
 
@@ -19,17 +19,24 @@ class SchoolSettingsValidator
     {
         self::$validation_rules = [
             'create' => [
-                'running_year' => 'required',
+                'name' => 'required|unique:class_level',
             ],
             'update' => [
                 'id' => 'required',
-                'running_year' => 'required',
+                'name' => 'required|unique:class_level',
             ],
-            'active' => [
+
+            'activate' => [
                 'id' => 'required',
             ],
-            'personification' => [
+            'deactivate' => [
                 'id' => 'required',
+            ],
+            'deactivate_slug' => [
+                'slug' => 'required',
+            ],
+            'activate_slug' => [
+                'slug' => 'required',
             ],
         ];
 

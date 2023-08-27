@@ -1,123 +1,111 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-////namespace SendinBlue;
-
-/////// require_once __DIR__ . '/vendor/autoload.php';
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Validations\SmtpSettingsValidator;
+use App\Validations\CloudinarySettingsValidator;
 use App\Validations\ErrorValidation;
 use App\Helpers\DBHelpers;
 use App\Helpers\ResponseHelper;
-use App\Models\StmpSettings;
-use SendinBlue;
-use GuzzleHttp;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use App\Services\SmtpService;
+use App\Models\CloudinarySettings;
+use App\Services\CloudinaryService;
 
-class SmtpSettingsController extends Controller
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
+
+class CloudinarySettingsController extends Controller
 {
     //
 
-    public function send_smtp_mail_test()
+    public function testing(Request $request)
     {
-        //Set mail configuration
-        SmtpService::setMailConfig();
+        // $data = DBHelpers::first_data(CloudinarySettings::class);
 
-        $data = ['name' => 'Virat Gandhi'];
+        // if ($data) {
+        //     $cloud = new CloudinaryService(
+        //         $data->name,
+        //         $data->api_key,
+        //         $data->secret_key,
+        //         $data->cloudinary_url
+        //     );
 
-        return Mail::send(['text' => 'mail'], $data, function ($message) {
-            $message
-                ->to('achawayne@gmail.com', 'Lorem Ipsum')
-                ->subject('Laravel Basic Testing Mail');
-            $message->from('xyz@gmail.com', $data['name']);
-        });
+        //     $res = $cloud->image_upload('test', $request->file('image'));
+        //     return $res['secure_url'];
+        // } else {
+        //     return ResponseHelper::error_response(
+        //         'Upload failed,  Cloudinary Settings class not found',
+        //         '',
+        //         401
+        //     );
+        // }
     }
 
-    public function send_mail_test()
+    public static function upload_image($image)
     {
-        $credentials = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey(
-            'api-key',
-            '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'
-        );
+        // $data = DBHelpers::first_data(CloudinarySettings::class);
 
-        /// return 'hello';
+        // if ($data) {
+        //     $cloud = new CloudinaryService(
+        //         $data->name,
+        //         $data->api_key,
+        //         $data->secret_key,
+        //         $data->cloudinary_url
+        //     );
 
-        $apiInstance = new SendinBlue\Client\Api\TransactionalEmailsApi(
-            new GuzzleHttp\Client(),
-            $credentials
-        );
-
-        $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail([
-            'subject' => 'from the PHP SDK!',
-            'sender' => [
-                'name' => 'Sendinblue',
-                'email' => 'contact@sendinblue.com',
-            ],
-            'replyTo' => [
-                'name' => 'Sendinblue',
-                'email' => 'contact@sendinblue.com',
-            ],
-            'to' => [
-                ['name' => 'Max Mustermann', 'email' => 'achawayne@gmail.com'],
-            ],
-            'htmlContent' =>
-                '<html><body><h1>This is a transactional email {{params.bodyMessage}}</h1></body></html>',
-            'params' => ['bodyMessage' => 'made just for you!'],
-        ]);
-
-        try {
-            $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
-            print_r($result);
-        } catch (Exception $e) {
-            echo $e->getMessage(), PHP_EOL;
-        }
+        //     $res = $cloud->image_upload('images', $image->file('image'));
+        //     return $res['secure_url'];
+        // } else {
+        //     return ResponseHelper::error_response(
+        //         'Upload failed,  Cloudinary Settings class not found',
+        //         '',
+        //         401
+        //     );
+        // }
     }
 
-    public function toggle(Request $request, SmtpSettingsValidator $val)
+    public function toggle(Request $request, CloudinarySettingsValidator $val)
     {
-        if ($request->isMethod('put')) {
+        if ($request->isMethod('post')) {
             $validate = $val->validate_rules($request, 'toggle');
 
             if (!$validate->fails() && $validate->validated()) {
                 if (
-                    !DBHelpers::exists(StmpSettings::class, [
+                    !DBHelpers::exists(CloudinarySettings::class, [
                         'id' => $request->id,
                     ])
                 ) {
                     return ResponseHelper::error_response(
-                        'Toggle failed,  SMTP Settings class not found',
+                        'Toggle failed,  Cloudinary Settings class not found',
                         '',
                         401
                     );
                 }
 
-                $current = DBHelpers::first_data(StmpSettings::class);
+                $current = DBHelpers::first_data(CloudinarySettings::class);
                 $msg = '';
 
                 if ($current->is_active == 1) {
                     $update = DBHelpers::update_query(
-                        StmpSettings::class,
+                        CloudinarySettings::class,
                         ['is_active' => 0],
                         $request->id
                     );
-                    $msg = 'SMTP settings deactivated successfully';
+                    $msg = 'Cloudinary settings deactivated successfully';
                 } else {
                     $update = DBHelpers::update_query(
-                        StmpSettings::class,
+                        CloudinarySettings::class,
                         ['is_active' => 1],
                         $request->id
                     );
-                    $msg = 'SMTP settings activated successfully';
+                    $msg = 'Cloudinary settings activated successfully';
                 }
 
                 if (!$update) {
                     return ResponseHelper::error_response(
-                        'SMTP toggle failed, Database updated issues',
+                        'Cloudinary toggle failed, Database updated issues',
                         '',
                         401
                     );
@@ -146,39 +134,39 @@ class SmtpSettingsController extends Controller
 
     public function index()
     {
-        $settings = DBHelpers::first_data(StmpSettings::class);
+        $settings = DBHelpers::first_data(CloudinarySettings::class);
         return ResponseHelper::success_response(
-            'SMTP settings fetched successfully',
+            'Cloudinary settings fetched successfully',
             $settings
         );
     }
 
-    public function update(Request $request, SmtpSettingsValidator $val)
+    public function update(Request $request, CloudinarySettingsValidator $val)
     {
         if ($request->isMethod('post')) {
             $validate = $val->validate_rules($request, 'update');
 
             if (!$validate->fails() && $validate->validated()) {
                 if (
-                    !DBHelpers::exists(StmpSettings::class, [
+                    !DBHelpers::exists(CloudinarySettings::class, [
                         'id' => $request->id,
                     ])
                 ) {
                     return ResponseHelper::error_response(
-                        'Update failed, School settings class not found',
+                        'Update failed, Cloudinary settings class not found',
                         '',
                         401
                     );
                 }
 
                 $update = DBHelpers::update_query_v2(
-                    StmpSettings::class,
+                    CloudinarySettings::class,
                     $request->only([
-                        'hostname',
-                        'protocol',
-                        'username',
-                        'password',
-                        'created_by',
+                        'name',
+                        'api_key',
+                        'secret_key',
+                        'cloudinary_url',
+                        'is_active',
                     ]),
                     $request->id
                 );
@@ -197,7 +185,14 @@ class SmtpSettingsController extends Controller
                 );
             } else {
                 $errors = json_decode($validate->errors());
-                $props = ['id', 'hostname', 'protocol', 'username', 'password'];
+                $props = [
+                    'id',
+                    'name',
+                    'api_key',
+                    'secret_key',
+                    'cloudinary_url',
+                    'is_active',
+                ];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
 
                 return ResponseHelper::error_response(
@@ -215,26 +210,26 @@ class SmtpSettingsController extends Controller
         }
     }
 
-    public function create(Request $request, SmtpSettingsValidator $val)
+    public function create(Request $request, CloudinarySettingsValidator $val)
     {
         if ($request->isMethod('post')) {
             $validate = $val->validate_rules($request, 'create');
             if (!$validate->fails() && $validate->validated()) {
-                $settings = StmpSettings::query()->get();
+                $settings = CloudinarySettings::query()->get();
                 if (count($settings) > 0) {
                     return ResponseHelper::success_response(
-                        'SMTP Settings added already, you can only update it',
+                        'Cloudinary Settings added already, you can only update it',
                         null
                     );
                 }
 
                 $create = DBHelpers::create_query(
-                    StmpSettings::class,
+                    CloudinarySettings::class,
                     $request->all()
                 );
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'SMTP Settings added successfully',
+                        'Cloundinary Settings added successfully',
                         null
                     );
                 } else {
@@ -246,7 +241,13 @@ class SmtpSettingsController extends Controller
                 }
             } else {
                 $errors = json_decode($validate->errors());
-                $props = ['hostname', 'protocol', 'username', 'password'];
+                $props = [
+                    'name',
+                    'api_key',
+                    'secret_key',
+                    'cloudinary_url',
+                    'is_active',
+                ];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
                 return ResponseHelper::error_response(
                     'validation error',

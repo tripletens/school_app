@@ -30,7 +30,6 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'data',
         'full_name',
-        'phone',
         'role',
         'type',
     ];
@@ -65,6 +64,11 @@ class User extends Authenticatable implements JWTSubject
     // {
     //     return $this->belongsTo(Role::class);
     // }
+
+    public function bio()
+    {
+        return $this->hasOne(UserBio::class, 'uid');
+    }
 
     public function staff()
     {

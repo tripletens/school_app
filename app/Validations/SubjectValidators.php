@@ -21,13 +21,11 @@ class SubjectValidators
             'register_subject' => [
                 'name' => 'required|unique:subject',
                 'subject_code' => 'required',
-                'credit_unit' => 'required',
             ],
 
             'update_subject' => [
                 'name' => 'required',
                 'subject_code' => 'required',
-                'credit_unit' => 'required',
                 'id' => 'required',
             ],
 
@@ -35,7 +33,7 @@ class SubjectValidators
                 'id' => 'required',
             ],
 
-            "fetch_subject_by_id" => [
+            'fetch_subject_by_id' => [
                 'id' => 'required',
             ],
 

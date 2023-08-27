@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
 use App\Helpers\DBHelpers;
@@ -57,7 +58,7 @@ class SubjectController extends Controller
                 $data = [
                     'name' => $request->name,
                     'subject_code' => $request->subject_code,
-                    'credit_unit' => $request->credit_unit
+                    'credit_unit' => $request->credit_unit,
                 ];
 
                 $create = DBHelpers::create_query(Subject::class, $data);
@@ -76,7 +77,7 @@ class SubjectController extends Controller
                 }
             } else {
                 $errors = json_decode($validate->errors());
-                $props = ['name', 'subject_code','credit_unit'];
+                $props = ['name', 'subject_code'];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
 
                 return ResponseHelper::error_response(
@@ -111,13 +112,11 @@ class SubjectController extends Controller
             );
 
             if (!$validate->fails() && $validate->validated()) {
-
                 $id = $request->id;
 
                 $data = [
-                    "id" => $id,
+                    'id' => $id,
                 ];
-
 
                 if (!DBHelpers::exists(Subject::class, ['id' => $id])) {
                     return ResponseHelper::error_response(
@@ -127,20 +126,17 @@ class SubjectController extends Controller
                     );
                 }
 
-                $subject = DBHelpers::query_filter_first(Subject::class,[
-                    "id" => $id,
+                $subject = DBHelpers::query_filter_first(Subject::class, [
+                    'id' => $id,
                 ]);
 
                 return ResponseHelper::success_response(
                     'Subject fetched successful',
                     $subject
                 );
-
             } else {
                 $errors = json_decode($validate->errors());
-                $props = [
-                    "id",
-                ];
+                $props = ['id'];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
 
                 return ResponseHelper::error_response(
@@ -296,7 +292,7 @@ class SubjectController extends Controller
      */
     public function update(Request $request)
     {
-        if ($request->isMethod('put')) {
+        if ($request->isMethod('post')) {
             $validate = SubjectValidators::validate_rules(
                 $request,
                 'update_subject'
@@ -308,7 +304,7 @@ class SubjectController extends Controller
                 $data = [
                     'name' => $request->name,
                     'subject_code' => $request->subject_code,
-                    'credit_unit' => $request->credit_unit
+                    'credit_unit' => $request->credit_unit,
                 ];
 
                 if (!DBHelpers::exists(Subject::class, ['id' => $id])) {
@@ -319,11 +315,7 @@ class SubjectController extends Controller
                     );
                 }
 
-                $update = DBHelpers::update_query(
-                    Subject::class,
-                    $data,
-                    $id
-                );
+                $update = DBHelpers::update_query(Subject::class, $data, $id);
 
                 if (!$update) {
                     return ResponseHelper::error_response(
@@ -357,7 +349,6 @@ class SubjectController extends Controller
         }
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
@@ -367,7 +358,10 @@ class SubjectController extends Controller
     public function destroy(Request $request)
     {
         if ($request->isMethod('delete')) {
-            $validate = SubjectValidators::validate_rules($request, 'delete_subject');
+            $validate = SubjectValidators::validate_rules(
+                $request,
+                'delete_subject'
+            );
 
             if (!$validate->fails() && $validate->validated()) {
                 $id = $request->id;

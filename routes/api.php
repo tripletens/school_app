@@ -29,7 +29,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // SCHOOL CLASSES
 Route::group(
     [
-        'middleware' => ['jwt.verify', 'admin.access'],
+        // 'middleware' => ['jwt.verify', 'admin.access'],
+        'middleware' => ['jwt.verify'],
         'prefix' => 'admin',
         'namespace' => 'App\Http\Controllers\Admin',
     ],
@@ -41,7 +42,8 @@ Route::group(
 /////// SCHOOL TERM SESSION CRUD
 Route::group(
     [
-        'middleware' => ['jwt.verify', 'admin.access'],
+        // 'middleware' => ['jwt.verify', 'admin.access'],
+        'middleware' => ['jwt.verify'],
         'prefix' => 'school-term',
         'namespace' => 'App\Http\Controllers',
     ],
@@ -56,7 +58,8 @@ Route::group(
 // ADMIN SECTIONS ///////
 Route::group(
     [
-        'middleware' => ['jwt.verify', 'admin.access'],
+        // 'middleware' => ['jwt.verify', 'admin.access'],
+        'middleware' => ['jwt.verify'],
         'prefix' => 'admin',
         'namespace' => 'App\Http\Controllers\Admin',
     ],
@@ -163,7 +166,6 @@ Route::group(
             function ($router) {
                 Route::post('/create', 'ServiceProviderController@create');
                 Route::post('/update', 'ServiceProviderController@update');
-
                 Route::post('/activate', 'ServiceProviderController@activate');
                 Route::post(
                     '/deactivate',
@@ -173,15 +175,20 @@ Route::group(
             }
         );
 
-        // School Settings ///////
+        // SCHOOL SETTINGS ///////
         Route::group(
             [
                 'prefix' => 'school-settings',
+                'middleware' => 'cors',
             ],
             function ($router) {
                 Route::post('/create', 'SchoolSettingsController@create');
                 Route::post('/update', 'SchoolSettingsController@update');
                 Route::get('/index', 'SchoolSettingsController@index');
+                Route::post(
+                    '/personification',
+                    'SchoolSettingsController@personification'
+                );
             }
         );
 
@@ -195,8 +202,109 @@ Route::group(
                 Route::post('/update', 'SmtpSettingsController@update');
                 Route::get('/index', 'SmtpSettingsController@index');
                 Route::put('/toggle', 'SmtpSettingsController@toggle');
+
+                Route::post(
+                    '/test-mail',
+                    'SmtpSettingsController@send_mail_test'
+                );
+
+                Route::post(
+                    '/send-smtp-test-mail',
+                    'SmtpSettingsController@send_smtp_mail_test'
+                );
             }
         );
+
+        // Cloudinary Settings ///////
+        Route::group(
+            [
+                'prefix' => 'cloudinary-settings',
+            ],
+            function ($router) {
+                Route::post('/create', 'CloudinarySettingsController@create');
+                Route::post('/update', 'CloudinarySettingsController@update');
+                Route::get('/index', 'CloudinarySettingsController@index');
+                Route::post('/toggle', 'CloudinarySettingsController@toggle');
+                Route::post('/testing', 'CloudinarySettingsController@testing');
+            }
+        );
+
+        // ROLE MANAGEMENT ///////
+        Route::group(
+            [
+                'prefix' => 'role',
+            ],
+            function ($router) {
+                Route::post('/create', 'RoleController@create');
+                Route::get('/index', 'RoleController@index');
+                Route::put('/role', 'RoleController@update');
+                Route::delete('/delete', 'RoleController@delete');
+                Route::get('/slug/{slug}', 'RoleController@slug');
+            }
+        );
+
+        // STAFF ///////
+        Route::group(
+            [
+                'prefix' => 'staff',
+            ],
+            function ($router) {
+                Route::post('/create', 'UserBioController@create');
+                Route::get('/index', 'UserBioController@index');
+                Route::get('/user/{role}', 'UserBioController@user');
+                Route::post('/staff', 'UserBioController@staff');
+                Route::post('/create-staff', 'UserBioController@create_staff');
+            }
+        );
+
+        // STAFF ///////
+        Route::group(
+            [
+                'prefix' => 'marquee',
+            ],
+            function ($router) {
+                Route::get('/index', 'MarqueeController@index');
+                Route::post('/activate', 'MarqueeController@activate');
+                Route::post('/deactivate', 'MarqueeController@deactivate');
+
+                Route::post(
+                    '/deactivate-slug',
+                    'MarqueeController@deactivate_slug'
+                );
+                Route::post(
+                    '/activate-slug',
+                    'MarqueeController@activate_slug'
+                );
+            }
+        );
+
+        /////// Subject CRUD
+        Route::group(
+            [
+                'prefix' => 'subject',
+            ],
+            function ($router) {
+                Route::post('/add', 'SubjectController@store');
+                Route::post('/update', 'SubjectController@update');
+                Route::post('/delete', 'SubjectController@destroy');
+                Route::get('/all', 'SubjectController@index');
+                Route::get(
+                    '/fetch-one-subject',
+                    'SubjectController@fetch_one_subject'
+                );
+            }
+        );
+    }
+);
+
+/////// User CRUD
+Route::group(
+    [
+        'prefix' => 'admin/user',
+        'namespace' => 'App\Http\Controllers',
+    ],
+    function ($router) {
+        Route::post('/upload-user', 'UserController@upload_user');
     }
 );
 
@@ -241,35 +349,6 @@ Route::group(
     }
 );
 
-// Role (Control and Manage Role)
-Route::group(
-    [
-        'middleware' => ['jwt.verify', 'admin.access'],
-        'prefix' => 'admin',
-        'namespace' => 'App\Http\Controllers',
-    ],
-    function ($router) {
-        Route::post('/create', 'RoleController@create');
-        Route::get('/index', 'RoleController@index');
-        Route::put('/role', 'RoleController@update');
-        Route::delete('/delete', 'RoleController@delete');
-    }
-);
-
-// Staff (Control and Manage Staff) ///////
-Route::group(
-    [
-        'middleware' => ['jwt.verify', 'admin.access'],
-        'prefix' => 'staff',
-        'namespace' => 'App\Http\Controllers',
-    ],
-    function ($router) {
-        Route::post('/create', 'StaffController@create');
-        Route::get('/staffs', 'StaffController@staffs');
-        Route::post('/staff', 'StaffController@staff');
-    }
-);
-
 // routes action for users Auth ////////
 Route::group(
     [
@@ -301,7 +380,6 @@ Route::group(
         Route::post('/deactivate-subject', 'SubjectController@deactivate_subject');
     }
 );
-
 
 /////// Subject Group CRUD
 Route::group(
@@ -342,7 +420,6 @@ Route::group(
     }
 );
 
-
 ////// Newsletter CRUD
 Route::group(
     [
@@ -350,11 +427,25 @@ Route::group(
         'namespace' => 'App\Http\Controllers',
     ],
     function ($router) {
-        Route::post('/add', 'NewsletterController@store')->middleware(['jwt.verify', 'admin.access']);
-        Route::put('/update', 'NewsletterController@update')->middleware(['jwt.verify', 'admin.access']);
-        Route::delete('/delete', 'NewsletterController@destroy')->middleware(['jwt.verify', 'admin.access']);
-        Route::get('/all', 'NewsletterController@index')->middleware(['jwt.verify']);
-        Route::get('/fetch-one-subject', 'NewsletterController@fetch_one_newsletter')->middleware(['jwt.verify']);
+        Route::post('/add', 'NewsletterController@store')->middleware([
+            'jwt.verify',
+            'admin.access',
+        ]);
+        Route::put('/update', 'NewsletterController@update')->middleware([
+            'jwt.verify',
+            'admin.access',
+        ]);
+        Route::delete('/delete', 'NewsletterController@destroy')->middleware([
+            'jwt.verify',
+            'admin.access',
+        ]);
+        Route::get('/all', 'NewsletterController@index')->middleware([
+            'jwt.verify',
+        ]);
+        Route::get(
+            '/fetch-one-subject',
+            'NewsletterController@fetch_one_newsletter'
+        )->middleware(['jwt.verify']);
     }
 );
 
@@ -375,5 +466,3 @@ Route::group(
         Route::get('/dashboard', 'UserController@dashboard');
     }
 );
-
-

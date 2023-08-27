@@ -199,6 +199,12 @@ class SmsServicesController extends Controller
                 0
             );
 
+            DBHelpers::update_query(
+                SmsServices::class,
+                ['is_active' => 1],
+                $request->id
+            );
+
             if (!$update) {
                 return ResponseHelper::error_response(
                     'Deactivation failed, Database updated issues',
@@ -238,11 +244,11 @@ class SmsServicesController extends Controller
                     );
                 }
 
-                DBHelpers::update_query(
-                    SmsServices::class,
-                    ['is_active' => 0],
-                    0
-                );
+                // DBHelpers::update_query(
+                //     SmsServices::class,
+                //     ['is_active' => 0],
+                //     0
+                // );
 
                 $update = DBHelpers::update_query(
                     SmsServices::class,

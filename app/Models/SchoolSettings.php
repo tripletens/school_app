@@ -26,5 +26,7 @@ class SchoolSettings extends Model
         'created_by',
         'status',
         'is_active',
+        'logo_url',
+        'bg_color',
     ];
 }
