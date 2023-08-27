@@ -158,6 +158,65 @@ class SubjectController extends Controller
         }
     }
 
+    public function activate_subject(Request $request){
+        if ($request->isMethod('post')) {
+            $validate = SubjectValidators::validate_rules(
+                $request,
+                'activate_subject'
+            );
+
+            if (!$validate->fails() && $validate->validated()) {
+
+                $id = $request->id;
+
+                $data = [
+                    "id" => $id,
+                    "is_active" => true
+                ];
+
+
+                if (!DBHelpers::exists(Subject::class, ['id' => $id])) {
+                    return ResponseHelper::error_response(
+                        'Update failed, Subject not found',
+                        '',
+                        401
+                    );
+                }
+
+
+                $update = DBHelpers::update_query_v2(
+                    Subject::class,
+                    $data,
+                    $request->id
+                );
+
+                return ResponseHelper::success_response(
+                    'Subject fetched successful',
+                    $update
+                );
+
+            } else {
+                $errors = json_decode($validate->errors());
+                $props = [
+                    "id",
+                ];
+                $error_res = ErrorValidation::arrange_error($errors, $props);
+
+                return ResponseHelper::error_response(
+                    'validation error',
+                    $error_res,
+                    401
+                );
+            }
+        } else {
+            return ResponseHelper::error_response(
+                'HTTP Request not allowed',
+                '',
+                404
+            );
+        }
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

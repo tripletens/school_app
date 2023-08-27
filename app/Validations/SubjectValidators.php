@@ -37,6 +37,10 @@ class SubjectValidators
 
             "fetch_subject_by_id" => [
                 'id' => 'required',
+            ],
+
+            "activate_subject" => [
+                'id' => 'required',
             ]
         ];
 
