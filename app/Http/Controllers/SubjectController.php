@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\DBHelpers;
-use App\Helpers\ResponseHelper;
-use App\Models\Newsletter;
-use App\Validations\ErrorValidation;
-use App\Validations\NewsletterValidators;
 use Illuminate\Http\Request;
+use App\Helpers\ResponseHelper;
+use App\Helpers\DBHelpers;
+use App\Models\Student;
+use App\Models\Subject;
+use App\Validations\SubjectValidators;
+use App\Validations\ErrorValidation;
+use App\Validations\StudentValidators;
 
-class NewsletterController extends Controller
+class SubjectController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,12 +20,12 @@ class NewsletterController extends Controller
      */
     public function index()
     {
-        // fetch all newsletters
+        // fetch all subjects
 
-        $roles = DBHelpers::all_data(Newsletter::class);
+        $roles = DBHelpers::all_data(Subject::class);
 
         return ResponseHelper::success_response(
-            'All Newsletters fetched successfully',
+            'All Subjects fetched successful',
             $roles
         );
     }
@@ -35,7 +37,6 @@ class NewsletterController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -46,39 +47,36 @@ class NewsletterController extends Controller
      */
     public function store(Request $request)
     {
-        // Save newsletter
         if ($request->isMethod('post')) {
-            $validate = NewsletterValidators::validate_rules(
+            $validate = SubjectValidators::validate_rules(
                 $request,
-                'register_newsletter'
+                'register_subject'
             );
 
             if (!$validate->fails() && $validate->validated()) {
-
                 $data = [
-                    'title' => $request->title ? $request->title : null ,
-                    'description' => $request->description ? $request->description : null,
-                    'image_url' => $request->image_url ? $request->image_url : null,
-                    'video_url' => $request->video_url ? $request->video_url : null
+                    'name' => $request->name,
+                    'subject_code' => $request->subject_code,
+                    'credit_unit' => $request->credit_unit
                 ];
 
-                $create = DBHelpers::create_query(Newsletter::class, $data);
+                $create = DBHelpers::create_query(Subject::class, $data);
 
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Newsletter created successfully',
+                        'Subject created successfully',
                         null
                     );
                 } else {
                     return ResponseHelper::error_response(
-                        'Newsletter creation failed, Database insertion issues',
+                        'Subject creation failed, Database insertion issues',
                         '',
                         401
                     );
                 }
             } else {
                 $errors = json_decode($validate->errors());
-                $props = ['title', 'description'];
+                $props = ['name', 'subject_code','credit_unit'];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
 
                 return ResponseHelper::error_response(
@@ -102,19 +100,14 @@ class NewsletterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
-
-    public function fetch_one_newsletter(Request $request)
+    public function fetch_one_subject(Request $request)
     {
         //
 
         if ($request->isMethod('get')) {
-            $validate = NewsletterValidators::validate_rules(
+            $validate = SubjectValidators::validate_rules(
                 $request,
-                'fetch_newsletter_by_id'
+                'fetch_subject_by_id'
             );
 
             if (!$validate->fails() && $validate->validated()) {
@@ -128,19 +121,137 @@ class NewsletterController extends Controller
 
                 if (!DBHelpers::exists(Subject::class, ['id' => $id])) {
                     return ResponseHelper::error_response(
-                        'Update failed, Newsletter not found',
+                        'Update failed, Subject not found',
                         '',
                         401
                     );
                 }
 
-                $newsletter = DBHelpers::query_filter_first(Newsletter::class,[
+                $subject = DBHelpers::query_filter_first(Subject::class,[
                     "id" => $id,
                 ]);
 
                 return ResponseHelper::success_response(
-                    'Newsletter fetched successful',
-                    $newsletter
+                    'Subject fetched successful',
+                    $subject
+                );
+
+            } else {
+                $errors = json_decode($validate->errors());
+                $props = [
+                    "id",
+                ];
+                $error_res = ErrorValidation::arrange_error($errors, $props);
+
+                return ResponseHelper::error_response(
+                    'validation error',
+                    $error_res,
+                    401
+                );
+            }
+        } else {
+            return ResponseHelper::error_response(
+                'HTTP Request not allowed',
+                '',
+                404
+            );
+        }
+    }
+
+    public function activate_subject(Request $request){
+        if ($request->isMethod('post')) {
+            $validate = SubjectValidators::validate_rules(
+                $request,
+                'activate_subject'
+            );
+
+            if (!$validate->fails() && $validate->validated()) {
+
+                $id = $request->id;
+
+                $data = [
+                    "id" => $id,
+                    "is_active" => true
+                ];
+
+
+                if (!DBHelpers::exists(Subject::class, ['id' => $id])) {
+                    return ResponseHelper::error_response(
+                        'Update failed, Subject not found',
+                        '',
+                        401
+                    );
+                }
+
+
+                $update = DBHelpers::update_query_v2(
+                    Subject::class,
+                    $data,
+                    $request->id
+                );
+
+                return ResponseHelper::success_response(
+                    'Subject activated successful',
+                    $update
+                );
+
+            } else {
+                $errors = json_decode($validate->errors());
+                $props = [
+                    "id",
+                ];
+                $error_res = ErrorValidation::arrange_error($errors, $props);
+
+                return ResponseHelper::error_response(
+                    'validation error',
+                    $error_res,
+                    401
+                );
+            }
+        } else {
+            return ResponseHelper::error_response(
+                'HTTP Request not allowed',
+                '',
+                404
+            );
+        }
+    }
+
+    public function deactivate_subject(Request $request){
+        if ($request->isMethod('post')) {
+            $validate = SubjectValidators::validate_rules(
+                $request,
+                'deactivate_subject'
+            );
+
+            if (!$validate->fails() && $validate->validated()) {
+
+                $id = $request->id;
+
+                $data = [
+                    "id" => $id,
+                    "is_active" => false
+                ];
+
+
+                if (!DBHelpers::exists(Subject::class, ['id' => $id])) {
+                    return ResponseHelper::error_response(
+                        'Update failed, Subject not found',
+                        '',
+                        401
+                    );
+                }
+
+
+                $update = DBHelpers::update_query_v2(
+                    Subject::class,
+                    $data,
+                    $request->id
+                );
+
+                return ResponseHelper::success_response(
+                    'Subject deactivated successful',
+                    $update
                 );
 
             } else {
@@ -183,35 +294,33 @@ class NewsletterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        // edit newsletter
         if ($request->isMethod('put')) {
-            $validate = NewsletterValidators::validate_rules(
+            $validate = SubjectValidators::validate_rules(
                 $request,
-                'update_newsletter'
+                'update_subject'
             );
 
             if (!$validate->fails() && $validate->validated()) {
                 $id = $request->id;
 
                 $data = [
-                    'title' => $request->title,
-                    'description' => $request->description,
-                    'image_url' => $request->image_url ? $request->image_url : null,
-                    'video_url' => $request->video_url ? $request->video_url : null,
+                    'name' => $request->name,
+                    'subject_code' => $request->subject_code,
+                    'credit_unit' => $request->credit_unit
                 ];
 
-                if (!DBHelpers::exists(Newsletter::class, ['id' => $id])) {
+                if (!DBHelpers::exists(Subject::class, ['id' => $id])) {
                     return ResponseHelper::error_response(
-                        'Update failed, Newsletter not found',
+                        'Update failed, Subject not found',
                         '',
                         401
                     );
                 }
 
                 $update = DBHelpers::update_query(
-                    Newsletter::class,
+                    Subject::class,
                     $data,
                     $id
                 );
@@ -230,7 +339,7 @@ class NewsletterController extends Controller
                 );
             } else {
                 $errors = json_decode($validate->errors());
-                $props = ['title', 'description'];
+                $props = ['name', 'subject'];
                 $error_res = ErrorValidation::arrange_error($errors, $props);
 
                 return ResponseHelper::error_response(
@@ -248,6 +357,7 @@ class NewsletterController extends Controller
         }
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
@@ -256,18 +366,17 @@ class NewsletterController extends Controller
      */
     public function destroy(Request $request)
     {
-        // delete newsletter by id
         if ($request->isMethod('delete')) {
-            $validate = NewsletterValidators::validate_rules($request, 'delete_newsletter');
+            $validate = SubjectValidators::validate_rules($request, 'delete_subject');
 
             if (!$validate->fails() && $validate->validated()) {
                 $id = $request->id;
 
-                $create = DBHelpers::delete_query(Newsletter::class, $id);
+                $create = DBHelpers::delete_query(Subject::class, $id);
 
                 if ($create) {
                     return ResponseHelper::success_response(
-                        'Newsletter deletion was successful',
+                        'Delete was successful',
                         null,
                         200
                     );
