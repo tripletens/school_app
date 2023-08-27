@@ -59,6 +59,7 @@ class NewsletterController extends Controller
                     'title' => $request->title ? $request->title : null ,
                     'description' => $request->description ? $request->description : null,
                     'image_url' => $request->image_url ? $request->image_url : null,
+                    'video_url' => $request->video_url ? $request->video_url : null
                 ];
 
                 $create = DBHelpers::create_query(Newsletter::class, $data);
@@ -198,6 +199,7 @@ class NewsletterController extends Controller
                     'title' => $request->title,
                     'description' => $request->description,
                     'image_url' => $request->image_url ? $request->image_url : null,
+                    'video_url' => $request->video_url ? $request->video_url : null,
                 ];
 
                 if (!DBHelpers::exists(Newsletter::class, ['id' => $id])) {
